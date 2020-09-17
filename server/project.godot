@@ -15,9 +15,8 @@ _global_script_class_icons={
 
 [application]
 
-config/name="voxel-game"
-run/main_scene="res://Client.tscn"
-config/icon="res://icon.png"
+config/name="server"
+run/main_scene="res://Server.tscn"
 
 [rendering]
 

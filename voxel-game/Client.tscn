@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Client.gd" type="Script" id=1]
+
+[node name="Node" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Connect" type="Button" parent="."]
+margin_left = 47.3761
+margin_top = 16.2635
+margin_right = 146.376
+margin_bottom = 36.2635
+text = "Connect"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Disconnect" type="Button" parent="."]
+margin_left = 47.0
+margin_top = 78.0
+margin_right = 146.0
+margin_bottom = 98.0
+text = "Disconnect"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="labelStatus" type="Label" parent="."]
+margin_left = 184.0
+margin_top = 16.0
+margin_right = 330.0
+margin_bottom = 99.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="labelServerData" type="Label" parent="."]
+margin_left = 330.0
+margin_top = 16.0
+margin_right = 476.0
+margin_bottom = 99.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Connect" to="." method="_on_Connect_pressed"]
+[connection signal="pressed" from="Disconnect" to="." method="_on_Disconnect_pressed"]
