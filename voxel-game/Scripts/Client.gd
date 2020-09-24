@@ -1,5 +1,8 @@
 extends Node
 
+func exit_game():
+	get_tree().quit()
+
 func _ready():
   var network = NetworkedMultiplayerENet.new()
   network.create_client("127.0.0.1", 4242)
@@ -9,12 +12,12 @@ func _ready():
 
   get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received")
   
-func _on_connection_failed(error):
-  $labelStatus.text = "Error connecting to server " + error
+func _on_connection_failed(error = "unknown error"):
+  $ConnectionMenu/labelStatus.text = "Error connecting to server: " + error
 
 
 func _on_packet_received(id, packet):
-  $labelServerData.text = packet.get_string_from_ascii()
+  $ConnectionMenu/labelServerData.text = packet.get_string_from_ascii()
 
 func _on_Connect_pressed():
   var network = NetworkedMultiplayerENet.new()
@@ -23,3 +26,6 @@ func _on_Connect_pressed():
 
 func _on_Disconnect_pressed():
 	get_tree().set_network_peer(null)  
+
+func _on_ExitBtn_pressed():
+	exit_game()
