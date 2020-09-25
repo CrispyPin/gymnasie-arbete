@@ -1,5 +1,8 @@
 extends Node
 
+var ip = "127.0.0.1"
+var port = 4242
+
 func exit_game():
 	get_tree().quit()
 
@@ -9,8 +12,6 @@ func _ready():
 
 func connect_to_server():
 	var network = NetworkedMultiplayerENet.new()
-	var ip = $PauseMenu/ConnectionMenu/EnterIP.text
-	var port = $PauseMenu/ConnectionMenu/EnterPort.text.to_int()
 	network.create_client(ip, port)
 	get_tree().set_network_peer(network)
 
@@ -18,10 +19,10 @@ func connect_to_server():
 
 
 func _on_connection_failed(error = "unknown error"):
-	$PauseMenu/ConnectionMenu/labelStatus.text = "Error connecting to server: " + error
+	get_node("../PauseMenu/ConnectionMenu/labelStatus").text = "Error connecting to server: " + error
 
 func _on_packet_received(id, packet):
-	$PauseMenu/ConnectionMenu/labelServerData.text = packet.get_string_from_ascii()
+	get_node("../PauseMenu/ConnectionMenu/labelServerData").text = packet.get_string_from_ascii()
 
 func _on_Connect_pressed():
 	connect_to_server()
@@ -31,3 +32,11 @@ func _on_Disconnect_pressed():
 
 func _on_ExitBtn_pressed():
 	exit_game()
+
+func _on_EnterIP_text_changed():
+	ip = get_node("../PauseMenu/ConnectionMenu/EnterIP").text
+	print(ip)
+
+func _on_EnterPort_text_changed():
+	port = get_node("../PauseMenu/ConnectionMenu/EnterPort").text
+	print(port)
