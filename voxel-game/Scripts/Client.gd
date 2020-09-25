@@ -38,5 +38,5 @@ func _on_EnterIP_text_changed():
 	print(ip)
 
 func _on_EnterPort_text_changed():
-	port = get_node("../PauseMenu/ConnectionMenu/EnterPort").text
+	port = get_node("../PauseMenu/ConnectionMenu/EnterPort").text.to_int()
 	print(port)
