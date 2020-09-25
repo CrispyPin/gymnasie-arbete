@@ -5,6 +5,7 @@ func exit_game():
 
 func _ready():
 	connect_to_server()
+	get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received")
 
 func connect_to_server():
 	var network = NetworkedMultiplayerENet.new()
@@ -14,7 +15,6 @@ func connect_to_server():
 	get_tree().set_network_peer(network)
 
 	network.connect("connection_failed", self, "_on_connection_failed")
-	get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received")
 
 
 func _on_connection_failed(error = "unknown error"):
