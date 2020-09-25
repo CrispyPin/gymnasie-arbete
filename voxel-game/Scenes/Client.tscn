@@ -1,30 +1,41 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Client.gd" type="Script" id=1]
-[ext_resource path="res://Scripts/ConnectionMenu.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/PauseMenu.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 blend_mode = 1
 
-[sub_resource type="CubeMesh" id=3]
+[sub_resource type="CubeMesh" id=2]
 
-[sub_resource type="PlaneMesh" id=2]
+[sub_resource type="PlaneMesh" id=3]
 
 [node name="Client" type="Node"]
 script = ExtResource( 1 )
 
-[node name="ConnectionMenu" type="Panel" parent="."]
-self_modulate = Color( 0.52549, 0.878431, 0.494118, 1 )
-material = SubResource( 1 )
-margin_right = 448.0
-margin_bottom = 136.0
+[node name="PauseMenu" type="Panel" parent="."]
+margin_left = 256.0
+margin_top = 136.0
+margin_right = 768.0
+margin_bottom = 464.0
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ConnectBtn" type="Button" parent="ConnectionMenu"]
+[node name="ConnectionMenu" type="Panel" parent="PauseMenu"]
+self_modulate = Color( 0.52549, 0.878431, 0.494118, 1 )
+material = SubResource( 1 )
+margin_left = 32.0
+margin_top = 16.0
+margin_right = 480.0
+margin_bottom = 152.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConnectBtn" type="Button" parent="PauseMenu/ConnectionMenu"]
 margin_left = 32.0
 margin_top = 16.0
 margin_right = 128.0
@@ -34,7 +45,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DisconnectBtn" type="Button" parent="ConnectionMenu"]
+[node name="DisconnectBtn" type="Button" parent="PauseMenu/ConnectionMenu"]
 margin_left = 32.0
 margin_top = 56.0
 margin_right = 128.0
@@ -44,25 +55,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="labelStatus" type="Label" parent="ConnectionMenu"]
-margin_left = 152.0
-margin_top = 24.0
-margin_right = 272.0
-margin_bottom = 88.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="labelServerData" type="Label" parent="ConnectionMenu"]
-margin_left = 288.0
-margin_top = 24.0
-margin_right = 424.0
-margin_bottom = 80.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ExitBtn" type="Button" parent="ConnectionMenu"]
+[node name="ExitBtn" type="Button" parent="PauseMenu/ConnectionMenu"]
 margin_left = 32.0
 margin_top = 96.0
 margin_right = 128.0
@@ -72,6 +65,38 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="labelStatus" type="Label" parent="PauseMenu/ConnectionMenu"]
+margin_left = 152.0
+margin_top = 16.0
+margin_right = 280.0
+margin_bottom = 72.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="labelServerData" type="Label" parent="PauseMenu/ConnectionMenu"]
+margin_left = 296.0
+margin_top = 16.0
+margin_right = 424.0
+margin_bottom = 72.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnterIP" type="TextEdit" parent="PauseMenu/ConnectionMenu"]
+margin_left = 160.0
+margin_top = 96.0
+margin_right = 256.0
+margin_bottom = 120.0
+text = "127.0.0.1"
+
+[node name="EnterPort" type="TextEdit" parent="PauseMenu/ConnectionMenu"]
+margin_left = 280.0
+margin_top = 96.0
+margin_right = 328.0
+margin_bottom = 120.0
+text = "4242"
+
 [node name="Player" parent="." instance=ExtResource( 3 )]
 speed = 0.2
 
@@ -79,23 +104,23 @@ speed = 0.2
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.59845, 2.69064, 3.71361 )
 
 [node name="MeshInstance3" type="MeshInstance" parent="Temp"]
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="MeshInstance4" type="MeshInstance" parent="Temp"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.1684, -2.15423, -1.98898 )
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="MeshInstance2" type="MeshInstance" parent="Temp"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.90604, 3.47914, 2.20919 )
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="MeshInstance" type="MeshInstance" parent="Temp"]
 transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, -3.59845, -2.69064, -3.71361 )
-mesh = SubResource( 2 )
+mesh = SubResource( 3 )
 material/0 = null
-[connection signal="pressed" from="ConnectionMenu/ConnectBtn" to="." method="_on_Connect_pressed"]
-[connection signal="pressed" from="ConnectionMenu/DisconnectBtn" to="." method="_on_Disconnect_pressed"]
-[connection signal="pressed" from="ConnectionMenu/ExitBtn" to="." method="_on_ExitBtn_pressed"]
+[connection signal="pressed" from="PauseMenu/ConnectionMenu/ConnectBtn" to="." method="_on_Connect_pressed"]
+[connection signal="pressed" from="PauseMenu/ConnectionMenu/DisconnectBtn" to="." method="_on_Disconnect_pressed"]
+[connection signal="pressed" from="PauseMenu/ConnectionMenu/ExitBtn" to="." method="_on_ExitBtn_pressed"]

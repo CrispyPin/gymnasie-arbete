@@ -4,28 +4,30 @@ func exit_game():
 	get_tree().quit()
 
 func _ready():
-  var network = NetworkedMultiplayerENet.new()
-  network.create_client("127.0.0.1", 4242)
-  get_tree().set_network_peer(network)
+	connect_to_server()
 
-  network.connect("connection_failed", self, "_on_connection_failed") #assign function for when connection fails
+func connect_to_server():
+	var network = NetworkedMultiplayerENet.new()
+	var ip = $PauseMenu/ConnectionMenu/EnterIP.text
+	var port = $PauseMenu/ConnectionMenu/EnterPort.text.to_int()
+	network.create_client(ip, port)
+	get_tree().set_network_peer(network)
 
-  get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received")
-  
+	network.connect("connection_failed", self, "_on_connection_failed")
+	get_tree().multiplayer.connect("network_peer_packet", self, "_on_packet_received")
+
+
 func _on_connection_failed(error = "unknown error"):
-  $ConnectionMenu/labelStatus.text = "Error connecting to server: " + error
-
+	$PauseMenu/ConnectionMenu/labelStatus.text = "Error connecting to server: " + error
 
 func _on_packet_received(id, packet):
-  $ConnectionMenu/labelServerData.text = packet.get_string_from_ascii()
+	$PauseMenu/ConnectionMenu/labelServerData.text = packet.get_string_from_ascii()
 
 func _on_Connect_pressed():
-  var network = NetworkedMultiplayerENet.new()
-  network.create_client("127.0.0.1", 4242)# ip, port
-  get_tree().set_network_peer(network)
+	connect_to_server()
 
 func _on_Disconnect_pressed():
-	get_tree().set_network_peer(null)  
+	get_tree().set_network_peer(null)
 
 func _on_ExitBtn_pressed():
 	exit_game()
