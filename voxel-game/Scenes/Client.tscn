@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/Client.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/PauseMenu.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/DebugOverlay.gd" type="Script" id=4]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 blend_mode = 1
@@ -10,6 +11,9 @@ blend_mode = 1
 [sub_resource type="CubeMesh" id=2]
 
 [sub_resource type="PlaneMesh" id=3]
+
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 10, 0.5, 10 )
 
 [node name="GameScene" type="Node"]
 
@@ -104,32 +108,70 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="RespawnButton" type="Button" parent="PauseMenu"]
+margin_left = 32.0
+margin_top = 168.0
+margin_right = 104.0
+margin_bottom = 200.0
+text = "Respawn"
+
+[node name="DebugOverlay" type="Panel" parent="."]
+margin_right = 256.0
+margin_bottom = 80.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Position" type="Label" parent="DebugOverlay"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 56.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Velocity" type="Label" parent="DebugOverlay"]
+margin_left = 136.0
+margin_top = 8.0
+margin_right = 248.0
+margin_bottom = 56.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Player" parent="." instance=ExtResource( 3 )]
-speed = 0.2
 
 [node name="Temp" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.59845, 2.69064, 3.71361 )
 
 [node name="MeshInstance3" type="MeshInstance" parent="Temp"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.13987, 3.61299, 0.651503 )
 mesh = SubResource( 2 )
 material/0 = null
 
 [node name="MeshInstance4" type="MeshInstance" parent="Temp"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.1684, -2.15423, -1.98898 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0285, 1.45876, -1.33748 )
 mesh = SubResource( 2 )
 material/0 = null
 
 [node name="MeshInstance2" type="MeshInstance" parent="Temp"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.90604, 3.47914, 2.20919 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.76617, 7.09213, 2.86069 )
 mesh = SubResource( 2 )
 material/0 = null
 
 [node name="MeshInstance" type="MeshInstance" parent="Temp"]
-transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, -3.59845, -2.69064, -3.71361 )
 mesh = SubResource( 3 )
 material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Temp/MeshInstance"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Temp/MeshInstance/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
+shape = SubResource( 4 )
 [connection signal="pressed" from="PauseMenu/ConnectionMenu/ConnectBtn" to="Client" method="_on_Connect_pressed"]
 [connection signal="pressed" from="PauseMenu/ConnectionMenu/DisconnectBtn" to="Client" method="_on_Disconnect_pressed"]
 [connection signal="pressed" from="PauseMenu/ConnectionMenu/ExitBtn" to="Client" method="_on_ExitBtn_pressed"]
 [connection signal="text_changed" from="PauseMenu/ConnectionMenu/EnterIP" to="Client" method="_on_EnterIP_text_changed"]
 [connection signal="text_changed" from="PauseMenu/ConnectionMenu/EnterPort" to="Client" method="_on_EnterPort_text_changed"]
+[connection signal="pressed" from="PauseMenu/RespawnButton" to="Player" method="_on_RespawnButton_pressed"]

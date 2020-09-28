@@ -1,13 +1,15 @@
 extends KinematicBody
 
-export var speed = 0.1
+export var speed = 10
+export var jump_power = 5
 export var sensitivity_h = 1.0
 export var sensitivity_v = 1.0
 
-var camera
+var velocity = Vector3()
+var gravity = 10
 
 func _ready():
-	camera = $Camera.transform
+	pass
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -17,7 +19,7 @@ func _input(event):
 		angle_v = max(PI *-0.5 - $Camera.rotation.x, angle_v)
 		$Camera.rotate_x(angle_v)
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	
 	var dir = Vector3()
 	if Input.is_key_pressed(KEY_W):
@@ -31,4 +33,17 @@ func _physics_process(_delta):
 	
 	dir.y = 0
 	dir = dir.normalized() * speed
-	move_and_collide(dir)
+	velocity.y -= gravity * delta
+	velocity.y = max(velocity.y, -100)
+	velocity.x = dir.x
+	velocity.z = dir.z
+	
+	if Input.is_action_just_pressed("jump"):# && velocity.y == 0:
+		velocity.y = jump_power
+	
+	move_and_slide(velocity)
+	
+
+
+func _on_RespawnButton_pressed():
+	global_transform.origin = Vector3(0,1,0)
