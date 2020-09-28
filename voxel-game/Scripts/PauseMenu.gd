@@ -1,7 +1,8 @@
-extends Panel
+extends Node
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	self.visible = false
 
 func _process(_delta):
 	if Input.is_action_just_pressed("pause_menu"):
