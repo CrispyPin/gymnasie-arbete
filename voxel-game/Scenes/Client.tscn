@@ -13,7 +13,7 @@ blend_mode = 1
 [sub_resource type="PlaneMesh" id=3]
 
 [sub_resource type="BoxShape" id=4]
-extents = Vector3( 10, 0.5, 10 )
+extents = Vector3( 16, 0.5, 16 )
 
 [node name="GameScene" type="Node"]
 
@@ -109,11 +109,14 @@ __meta__ = {
 }
 
 [node name="RespawnButton" type="Button" parent="PauseMenu"]
-margin_left = 32.0
+margin_left = 208.0
 margin_top = 168.0
-margin_right = 104.0
-margin_bottom = 200.0
+margin_right = 304.0
+margin_bottom = 192.0
 text = "Respawn"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="DebugOverlay" type="Panel" parent="."]
 margin_right = 256.0
@@ -156,17 +159,18 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="MeshInstance2" type="MeshInstance" parent="Temp"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.76617, 7.09213, 2.86069 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.96942, 2.92762, 9.32718 )
 mesh = SubResource( 2 )
 material/0 = null
 
 [node name="MeshInstance" type="MeshInstance" parent="Temp"]
+transform = Transform( 16, 0, 0, 0, 1, 0, 0, 0, 16, 0, 0, 0 )
 mesh = SubResource( 3 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="Temp/MeshInstance"]
+[node name="Floor" type="StaticBody" parent="Temp"]
 
-[node name="CollisionShape" type="CollisionShape" parent="Temp/MeshInstance/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="Temp/Floor"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
 shape = SubResource( 4 )
 [connection signal="pressed" from="PauseMenu/ConnectionMenu/ConnectBtn" to="Client" method="_on_Connect_pressed"]

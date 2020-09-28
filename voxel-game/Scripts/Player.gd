@@ -8,9 +8,6 @@ export var sensitivity_v = 1.0
 var velocity = Vector3()
 var gravity = 10
 
-func _ready():
-	pass
-
 func _input(event):
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * sensitivity_h * 0.002)
@@ -34,16 +31,15 @@ func _physics_process(delta):
 	dir.y = 0
 	dir = dir.normalized() * speed
 	velocity.y -= gravity * delta
-	velocity.y = max(velocity.y, -100)
 	velocity.x = dir.x
 	velocity.z = dir.z
 	
-	if Input.is_action_just_pressed("jump"):# && velocity.y == 0:
+	if Input.is_action_just_pressed("jump") && is_on_floor():
 		velocity.y = jump_power
 	
-	move_and_slide(velocity)
-	
+	velocity = move_and_slide(velocity, Vector3.UP)
 
 
 func _on_RespawnButton_pressed():
 	global_transform.origin = Vector3(0,1,0)
+	velocity = Vector3(0, 0, 0);
