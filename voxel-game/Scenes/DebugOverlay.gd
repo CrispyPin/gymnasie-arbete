@@ -1,14 +1,17 @@
-extends Node
+extends Panel
 
 var player
 
 func _ready():
 	player = get_node("../Player")
-
+	visible = false
 
 func _process(_delta):
 	update_pos()
 	update_vel()
+	
+	if Input.is_action_just_pressed("debug_overlay_toggle"):
+		visible = !visible
 
 func update_pos():
 	$Position.text = "Position XYZ:\n"
