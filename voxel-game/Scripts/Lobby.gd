@@ -38,3 +38,11 @@ func _on_JoinButton_pressed():
 	get_tree().set_network_peer(host)
 	$Status.text = "Joined"
 	start_game()
+
+
+func _on_InputPort_text_changed(new_text):
+	port = int(new_text)
+
+
+func _on_InputIP_text_changed(new_text):
+	ip = new_text

@@ -20,6 +20,7 @@ func _input(event):
 slave func set_position(pos):
 	global_transform = pos
 
+
 func _physics_process(delta):
 	if is_network_master():
 		var dir = Vector3()

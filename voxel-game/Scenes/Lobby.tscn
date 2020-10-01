@@ -5,9 +5,6 @@
 [node name="Lobby" type="Node"]
 script = ExtResource( 4 )
 
-[node name="Client" type="Node" parent="."]
-pause_mode = 2
-
 [node name="MainMenu" type="Panel" parent="."]
 margin_left = 256.0
 margin_top = 136.0
@@ -63,3 +60,5 @@ __meta__ = {
 }
 [connection signal="pressed" from="MainMenu/HostButton" to="." method="_on_HostButton_pressed"]
 [connection signal="pressed" from="MainMenu/JoinButton" to="." method="_on_JoinButton_pressed"]
+[connection signal="text_changed" from="MainMenu/InputIP" to="." method="_on_InputIP_text_changed"]
+[connection signal="text_changed" from="MainMenu/InputPort" to="." method="_on_InputPort_text_changed"]
