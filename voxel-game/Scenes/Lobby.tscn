@@ -49,10 +49,10 @@ margin_bottom = 80.0
 text = "4242"
 
 [node name="Status" type="Label" parent="."]
-margin_left = 896.0
-margin_top = 576.0
-margin_right = 1024.0
-margin_bottom = 600.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -24.0
+margin_right = 128.0
 text = "Idle"
 valign = 1
 __meta__ = {
