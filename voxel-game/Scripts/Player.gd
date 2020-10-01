@@ -11,15 +11,20 @@ var gravity = 10
 func _input(event):
 	if is_network_master():
 		if event is InputEventMouseMotion:
-			rotate_y(-event.relative.x * sensitivity_h * 0.002)
+			var angle_h = -event.relative.x * sensitivity_h * 0.002
+			rotate_y(angle_h)
 			var angle_v = -event.relative.y * sensitivity_v * 0.002
 			angle_v = min(PI * 0.5 - $Camera.rotation.x, angle_v)
 			angle_v = max(PI *-0.5 - $Camera.rotation.x, angle_v)
 			$Camera.rotate_x(angle_v)
+			rpc_unreliable("update_rot", angle_h, angle_v)
 
-slave func set_position(pos):
+puppet func update_pos(pos):
 	global_transform = pos
 
+puppet func update_rot(y, x):
+	$Camera.rotate_x(x)
+	rotate_y(y)
 
 func _physics_process(delta):
 	if is_network_master():
@@ -44,4 +49,5 @@ func _physics_process(delta):
 
 		velocity = move_and_slide(velocity, Vector3.UP)
 
-		rpc_unreliable("set_position", global_transform)
+		rpc_unreliable("update_pos", global_transform)
+
