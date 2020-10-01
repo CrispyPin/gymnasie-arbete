@@ -21,8 +21,7 @@ func _process(_delta):
 
 
 func _on_RespawnButton_pressed():
-	globals.local_player.global_transform.origin = Vector3(0,1,0)
-	globals.local_player.velocity = Vector3(0, 0, 0);
+	globals.local_player.respawn()
 
 
 func _on_ExitBtn_pressed():
