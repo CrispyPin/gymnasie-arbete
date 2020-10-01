@@ -1,0 +1,109 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/PauseMenu.gd" type="Script" id=1]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+blend_mode = 1
+
+[node name="PauseMenu" type="Panel"]
+pause_mode = 2
+margin_left = 256.0
+margin_top = 136.0
+margin_right = 768.0
+margin_bottom = 464.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConnectionMenu" type="Panel" parent="."]
+visible = false
+self_modulate = Color( 0.52549, 0.878431, 0.494118, 1 )
+material = SubResource( 1 )
+margin_left = 32.0
+margin_top = 16.0
+margin_right = 480.0
+margin_bottom = 152.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConnectBtn" type="Button" parent="ConnectionMenu"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 128.0
+margin_bottom = 56.0
+text = "Connect"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DisconnectBtn" type="Button" parent="ConnectionMenu"]
+margin_left = 32.0
+margin_top = 80.0
+margin_right = 128.0
+margin_bottom = 104.0
+text = "Disconnect"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="labelStatus" type="Label" parent="ConnectionMenu"]
+margin_left = 152.0
+margin_top = 16.0
+margin_right = 280.0
+margin_bottom = 72.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="labelServerData" type="Label" parent="ConnectionMenu"]
+margin_left = 296.0
+margin_top = 16.0
+margin_right = 424.0
+margin_bottom = 72.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnterIP" type="TextEdit" parent="ConnectionMenu"]
+margin_left = 160.0
+margin_top = 96.0
+margin_right = 288.0
+margin_bottom = 120.0
+text = "127.0.0.1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnterPort" type="TextEdit" parent="ConnectionMenu"]
+margin_left = 320.0
+margin_top = 96.0
+margin_right = 384.0
+margin_bottom = 120.0
+text = "4242"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RespawnButton" type="Button" parent="."]
+margin_left = 208.0
+margin_top = 168.0
+margin_right = 304.0
+margin_bottom = 192.0
+text = "Respawn"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExitBtn" type="Button" parent="."]
+margin_left = 64.0
+margin_top = 168.0
+margin_right = 160.0
+margin_bottom = 192.0
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="RespawnButton" to="." method="_on_RespawnButton_pressed"]
+[connection signal="pressed" from="ExitBtn" to="." method="_on_ExitBtn_pressed"]

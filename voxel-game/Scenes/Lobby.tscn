@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/Lobby.gd" type="Script" id=4]
+
+[node name="Lobby" type="Node"]
+script = ExtResource( 4 )
+
+[node name="Client" type="Node" parent="."]
+pause_mode = 2
+
+[node name="MainMenu" type="Panel" parent="."]
+margin_left = 256.0
+margin_top = 136.0
+margin_right = 768.0
+margin_bottom = 464.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HostButton" type="Button" parent="MainMenu"]
+margin_left = 192.0
+margin_top = 56.0
+margin_right = 320.0
+margin_bottom = 80.0
+text = "Host game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JoinButton" type="Button" parent="MainMenu"]
+margin_left = 192.0
+margin_top = 96.0
+margin_right = 320.0
+margin_bottom = 120.0
+text = "Join game"
+
+[node name="InputIP" type="LineEdit" parent="MainMenu"]
+margin_left = 336.0
+margin_top = 96.0
+margin_right = 416.0
+margin_bottom = 120.0
+text = "127.0.0.1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputPort" type="LineEdit" parent="MainMenu"]
+margin_left = 336.0
+margin_top = 56.0
+margin_right = 416.0
+margin_bottom = 80.0
+text = "4242"
+
+[node name="Status" type="Label" parent="."]
+margin_left = 896.0
+margin_top = 576.0
+margin_right = 1024.0
+margin_bottom = 600.0
+text = "Idle"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="MainMenu/HostButton" to="." method="_on_HostButton_pressed"]
+[connection signal="pressed" from="MainMenu/JoinButton" to="." method="_on_JoinButton_pressed"]
