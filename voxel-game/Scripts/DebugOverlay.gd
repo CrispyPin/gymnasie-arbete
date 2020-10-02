@@ -5,6 +5,9 @@ var player
 func _ready():
 	player = globals.local_player
 	visible = false
+	$NetworkStatus.text = "Playing on server"
+	if get_tree().is_network_server():
+		$NetworkStatus.text = "Hosting server"
 
 func _process(_delta):
 	if visible:

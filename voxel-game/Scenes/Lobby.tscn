@@ -19,9 +19,9 @@ __meta__ = {
 }
 
 [node name="HostButton" type="Button" parent="MainMenu"]
-margin_left = 192.0
+margin_left = 64.0
 margin_top = 56.0
-margin_right = 320.0
+margin_right = 192.0
 margin_bottom = 80.0
 text = "Host game"
 __meta__ = {
@@ -29,16 +29,16 @@ __meta__ = {
 }
 
 [node name="JoinButton" type="Button" parent="MainMenu"]
-margin_left = 192.0
+margin_left = 64.0
 margin_top = 96.0
-margin_right = 320.0
+margin_right = 192.0
 margin_bottom = 120.0
 text = "Join game"
 
 [node name="InputIP" type="LineEdit" parent="MainMenu"]
-margin_left = 336.0
+margin_left = 208.0
 margin_top = 96.0
-margin_right = 416.0
+margin_right = 320.0
 margin_bottom = 120.0
 text = "127.0.0.1"
 __meta__ = {
@@ -46,22 +46,11 @@ __meta__ = {
 }
 
 [node name="InputPort" type="LineEdit" parent="MainMenu"]
-margin_left = 336.0
+margin_left = 208.0
 margin_top = 56.0
-margin_right = 416.0
+margin_right = 320.0
 margin_bottom = 80.0
 text = "4242"
-
-[node name="Status" type="Label" parent="."]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -24.0
-margin_right = 128.0
-text = "Idle"
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 [connection signal="pressed" from="MainMenu/HostButton" to="." method="_on_HostButton_pressed"]
 [connection signal="pressed" from="MainMenu/JoinButton" to="." method="_on_JoinButton_pressed"]
 [connection signal="text_changed" from="MainMenu/InputIP" to="." method="_on_InputIP_text_changed"]

@@ -27,16 +27,14 @@ func _on_HostButton_pressed():
 		return
 
 	get_tree().set_network_peer(host)
-	$Status.text = "Hosting"
 	start_game()
-
 
 func _on_JoinButton_pressed():
 	print("Joining game on " + ip + ":" + str(port))
 	var host = NetworkedMultiplayerENet.new()
 	host.create_client(ip, port)
+
 	get_tree().set_network_peer(host)
-	$Status.text = "Joined"
 	start_game()
 
 

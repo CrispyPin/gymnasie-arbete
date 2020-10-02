@@ -4,8 +4,10 @@
 [ext_resource path="res://head_material.tres" type="Material" id=2]
 
 [sub_resource type="CubeMesh" id=1]
+size = Vector3( 1.2, 1.2, 1.2 )
 
 [sub_resource type="CubeMesh" id=2]
+size = Vector3( 1.1, 1.1, 0.9 )
 
 [sub_resource type="CubeMesh" id=3]
 
@@ -16,20 +18,19 @@ height = 1.5
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 1 )
 
-[node name="Camera" type="Camera" parent="."]
+[node name="Head" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Camera"]
-transform = Transform( 0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0 )
 mesh = SubResource( 1 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
-[node name="MeshInstance2" type="MeshInstance" parent="Camera"]
-transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.6, 0, 0, -0.2 )
+[node name="Camera" type="Camera" parent="Head"]
+
+[node name="FaceMesh" type="MeshInstance" parent="Head"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
 mesh = SubResource( 2 )
 material/0 = ExtResource( 2 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
+[node name="Body" type="MeshInstance" parent="."]
 transform = Transform( 0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 1, 0 )
 mesh = SubResource( 3 )
 material/0 = null

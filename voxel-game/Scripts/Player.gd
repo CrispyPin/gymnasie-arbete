@@ -14,16 +14,16 @@ func _input(event):
 			var angle_h = -event.relative.x * sensitivity_h * 0.002
 			rotate_y(angle_h)
 			var angle_v = -event.relative.y * sensitivity_v * 0.002
-			angle_v = min(PI * 0.5 - $Camera.rotation.x, angle_v)
-			angle_v = max(PI *-0.5 - $Camera.rotation.x, angle_v)
-			$Camera.rotate_x(angle_v)
+			angle_v = min(PI * 0.5 - $Head.rotation.x, angle_v)
+			angle_v = max(PI *-0.5 - $Head.rotation.x, angle_v)
+			$Head.rotate_x(angle_v)
 			rpc_unreliable("update_rot", angle_h, angle_v)
 
 puppet func update_pos(pos):
 	global_transform = pos
 
 puppet func update_rot(y, x):
-	$Camera.rotate_x(x)
+	$Head.rotate_x(x)
 	rotate_y(y)
 
 func _physics_process(delta):
