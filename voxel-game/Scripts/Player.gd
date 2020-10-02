@@ -5,26 +5,27 @@ export var jump_power = 5
 export var sensitivity_h = 1.0
 export var sensitivity_v = 1.0
 
+export var gravity = 10
+
+
 var velocity = Vector3()
-var gravity = 10
 
 func _input(event):
 	if is_network_master():
 		if event is InputEventMouseMotion:
-			var angle_h = -event.relative.x * sensitivity_h * 0.002
-			rotate_y(angle_h)
+			rotation.y += -event.relative.x * sensitivity_h * 0.002
 			var angle_v = -event.relative.y * sensitivity_v * 0.002
 			angle_v = min(PI * 0.5 - $Head.rotation.x, angle_v)
 			angle_v = max(PI *-0.5 - $Head.rotation.x, angle_v)
 			$Head.rotate_x(angle_v)
-			rpc_unreliable("update_rot", angle_h, angle_v)
+			rpc_unreliable("update_rot", rotation.y, $Head.rotation.x)
 
 puppet func update_pos(pos):
 	global_transform = pos
 
 puppet func update_rot(y, x):
-	$Head.rotate_x(x)
-	rotate_y(y)
+	$Head.rotation.x = x
+	rotation.y = y
 
 func _physics_process(delta):
 	if is_network_master():

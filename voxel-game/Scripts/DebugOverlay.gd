@@ -12,7 +12,7 @@ func _ready():
 func _process(_delta):
 	if visible:
 		update_pos()
-		update_vel()
+		update_rot()
 
 	if Input.is_action_just_pressed("debug_overlay_toggle"):
 		visible = !visible
@@ -23,8 +23,6 @@ func update_pos():
 	$Position.text += str(globals.local_player.global_transform.origin.y) + "\n"
 	$Position.text += str(globals.local_player.global_transform.origin.z) + "\n"
 
-func update_vel():
-	$Velocity.text = "Velocity XYZ:\n"
-	$Velocity.text += str(globals.local_player.velocity.x) + "\n"
-	$Velocity.text += str(globals.local_player.velocity.y) + "\n"
-	$Velocity.text += str(globals.local_player.velocity.z) + "\n"
+func update_rot():
+	$Rotation.text = "Pitch: " + str(globals.local_player.get_node("Head").rotation.x) + "\n"
+	$Rotation.text +="Yaw:   " + str(globals.local_player.rotation.y)
