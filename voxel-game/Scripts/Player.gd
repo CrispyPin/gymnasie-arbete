@@ -1,5 +1,7 @@
 extends KinematicBody
 
+export var reach = 5
+
 export var speed = 10
 export var jump_power = 5
 export var sensitivity_h = 1.0
@@ -7,8 +9,11 @@ export var sensitivity_v = 1.0
 
 export var gravity = 10
 
-
+var world
 var velocity = Vector3()
+
+func _ready():
+	world = get_parent().get_node("VoxelWorld")
 
 func _input(event):
 	if is_network_master():
@@ -56,3 +61,6 @@ func respawn():
 	global_transform.origin = Vector3(0,1,0)
 	velocity = Vector3(0, 0, 0);
 	rpc_unreliable("update_pos", global_transform)
+
+func break_voxel(pos):
+	world.set_voxel(pos)

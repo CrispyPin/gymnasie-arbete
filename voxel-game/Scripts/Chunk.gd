@@ -42,7 +42,6 @@ func _ready():
 			for _z in range(size):
 				voxels[-1][-1].append(0)
 	
-	
 	voxels[0][0][0] = 1
 	voxels[1][1][1] = 1
 	voxels[1][1][2] = 1
@@ -51,6 +50,7 @@ func _ready():
 	voxels[1][2][3] = 1
 	
 	update_mesh()
+
 
 func update_mesh():
 	for x in range(size):
@@ -107,11 +107,29 @@ func get_voxel(pos):
 		return voxels[pos.x][pos.y][pos.z]
 	return 0
 
-func set_voxel(x, y, z, t):
-	if pos_is_valid(x, y, z):
-		voxels[x][y][z] = t
+func set_voxel(pos, t):
+	if pos_is_valid(pos.x, pos.y, pos.z):
+		voxels[pos.x][pos.y][pos.z] = t
+		update_mesh()
 		return true
 	return false
 
 func pos_is_valid(x, y, z):
-	return !(x < 0 or x > size or y < 0 or y > size or z < 0 or z > size)
+	return !(x<0 or x>size or y<0 or y>size or z<0 or z>size)
+
+func world_to_chunk(wpos):
+	var phy_size = size*vsize
+	# localise to chunk
+	var x = fmod(wpos.x, phy_size)
+	var y = fmod(wpos.y, phy_size)
+	var z = fmod(wpos.z, phy_size)
+	# scale to voxels
+	x /= vsize
+	y /= vsize
+	z /= vsize
+	# get closest
+	x = int(x)
+	y = int(y)
+	z = int(z)
+	return Vector3(x, y, z)
+
