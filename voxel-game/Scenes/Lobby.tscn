@@ -1,57 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
+[ext_resource path="res://Scenes/MainMenu.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Lobby.gd" type="Script" id=4]
 
 [node name="Lobby" type="Node"]
 script = ExtResource( 4 )
 
-[node name="MainMenu" type="Panel" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -256.0
-margin_top = -164.0
-margin_right = 256.0
-margin_bottom = 164.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HostButton" type="Button" parent="MainMenu"]
-margin_left = 64.0
-margin_top = 56.0
-margin_right = 192.0
-margin_bottom = 80.0
-text = "Host game"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="JoinButton" type="Button" parent="MainMenu"]
-margin_left = 64.0
-margin_top = 96.0
-margin_right = 192.0
-margin_bottom = 120.0
-text = "Join game"
-
-[node name="InputIP" type="LineEdit" parent="MainMenu"]
-margin_left = 208.0
-margin_top = 96.0
-margin_right = 320.0
-margin_bottom = 120.0
-text = "127.0.0.1"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="InputPort" type="LineEdit" parent="MainMenu"]
-margin_left = 208.0
-margin_top = 56.0
-margin_right = 320.0
-margin_bottom = 80.0
-text = "4242"
-[connection signal="pressed" from="MainMenu/HostButton" to="." method="_on_HostButton_pressed"]
-[connection signal="pressed" from="MainMenu/JoinButton" to="." method="_on_JoinButton_pressed"]
-[connection signal="text_changed" from="MainMenu/InputIP" to="." method="_on_InputIP_text_changed"]
-[connection signal="text_changed" from="MainMenu/InputPort" to="." method="_on_InputPort_text_changed"]
+[node name="MainMenu" parent="." instance=ExtResource( 1 )]

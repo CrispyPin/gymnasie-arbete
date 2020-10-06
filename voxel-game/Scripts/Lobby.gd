@@ -1,8 +1,5 @@
 extends Node
 
-var port = 4242
-var ip = "127.0.0.1"
-
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 
@@ -18,10 +15,10 @@ func start_game():
 	get_tree().get_root().add_child(game)
 
 
-func _on_HostButton_pressed():
+func host_game(port, max_players):
 	print("Hosting game on port " + str(port))
 	var host = NetworkedMultiplayerENet.new()
-	var res = host.create_server(port, 16)
+	var res = host.create_server(port, max_players)
 	if res != OK:
 		print("Error creating server")
 		return
@@ -29,7 +26,7 @@ func _on_HostButton_pressed():
 	get_tree().set_network_peer(host)
 	start_game()
 
-func _on_JoinButton_pressed():
+func join_game(ip, port):
 	print("Joining game on " + ip + ":" + str(port))
 	var host = NetworkedMultiplayerENet.new()
 	host.create_client(ip, port)
@@ -37,10 +34,3 @@ func _on_JoinButton_pressed():
 	get_tree().set_network_peer(host)
 	start_game()
 
-
-func _on_InputPort_text_changed(new_text):
-	port = int(new_text)
-
-
-func _on_InputIP_text_changed(new_text):
-	ip = new_text
