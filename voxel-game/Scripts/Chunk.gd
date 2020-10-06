@@ -3,6 +3,7 @@ extends Spatial
 export var voxels = []
 
 const size = Globals.chunk_size
+const vsize = Globals.voxel_size
 
 var mesh
 
@@ -77,7 +78,7 @@ func update_mesh_face(x, y, z, f):
 	var i = len(verts)# where to start when indexing new tris
 	
 	for v in range(4):# add the 4 corners of this face
-		verts.append(pos + face_verts[f][v])
+		verts.append((pos + face_verts[f][v])*vsize)
 		normals.append(face_normals[f])
 	
 	# connect them into tris:
