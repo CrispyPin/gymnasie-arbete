@@ -9,7 +9,7 @@ func _ready():
 
 func _player_connected(id):
 	print("Player " + str(id) + " connected")
-	globals.players.append(id)
+	Globals.players.append(id)
 	get_node("/root/GameScene")._new_player()
 
 func start_game():

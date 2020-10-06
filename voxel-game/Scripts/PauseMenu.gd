@@ -3,7 +3,7 @@ extends Node
 var player
 
 func _ready():
-	player = globals.local_player
+	player = Globals.local_player
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	self.visible = false
 
@@ -21,7 +21,7 @@ func _process(_delta):
 
 
 func _on_RespawnButton_pressed():
-	globals.local_player.respawn()
+	Globals.local_player.respawn()
 
 
 func _on_ExitBtn_pressed():
