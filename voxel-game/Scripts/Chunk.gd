@@ -12,6 +12,7 @@ var verts = PoolVector3Array()
 var uvs = PoolVector2Array()
 var normals = PoolVector3Array()
 var indices = PoolIntArray()
+var collision_tris = PoolVector3Array()
 
 # mesh constants
 const face_normals = [Vector3(1, 0, 0), Vector3(-1, 0, 0),
@@ -49,10 +50,20 @@ func _ready():
 	voxels[1][1][4] = 1
 	voxels[1][2][3] = 1
 	
+	#mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh_array)
 	update_mesh()
+	
 
+func _process(_delta):
+	pass
 
 func update_mesh():
+	verts.resize(0)
+	uvs.resize(0)
+	normals.resize(0)
+	indices.resize(0)
+	collision_tris.resize(0)
+	
 	for x in range(size):
 		for y in range(size):
 			for z in range(size):
@@ -63,9 +74,12 @@ func update_mesh():
 	mesh_array[Mesh.ARRAY_TEX_UV] = uvs
 	mesh_array[Mesh.ARRAY_NORMAL] = normals
 	mesh_array[Mesh.ARRAY_INDEX]  = indices
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh_array)
 	
-	$Mesh.create_trimesh_collision()
+	mesh.surface_remove(0)
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh_array)
+
+	$StaticBody/CollisionShape.shape.set_faces(collision_tris)
+	#$Mesh.create_trimesh_collision()
 
 func update_mesh_voxel(x, y, z):
 	for f in range(6):
@@ -75,26 +89,23 @@ func update_mesh_face(x, y, z, f):
 	var pos = Vector3(x, y, z)
 	if get_voxel(pos + face_normals[f]):
 		return
-	var i = len(verts)# where to start when indexing new tris
+	var i = len(verts)# offset for new tris
 	
-	for v in range(4):# add the 4 corners of this face
+	for v in range(4):# add the 4 corner verts of this face
 		verts.append((pos + face_verts[f][v])*vsize)
 		normals.append(face_normals[f])
 	
 	# connect them into tris:
-	indices.append(i)
-	indices.append(i + 1)
-	indices.append(i + 2)
-	indices.append(i + 2)
-	indices.append(i + 3)
-	indices.append(i)
+	for v in [0,1,2,2,3,0]:
+		indices.append(i+v)
+		#collision shape
+		collision_tris.append((pos + face_verts[f][v]) * vsize)
 	
-	#add uvs
+	# create uvs
 	uvs.append(Vector2(0, 1))
 	uvs.append(Vector2(0, 0))
 	uvs.append(Vector2(1, 0))
 	uvs.append(Vector2(1, 1))
-	
 
 
 func get_voxel_raw(x, y, z):

@@ -2,7 +2,7 @@ extends Spatial
 
 var player
 
-const epsilon = 0.001
+const epsilon = 0.01
 
 func _ready():
 	player = get_parent()
@@ -13,7 +13,7 @@ func _physics_process(_delta):
 		if Input.is_action_just_pressed("break_voxel"):
 			var result = raycast()
 			if result:
-				call_deferred("player.break_voxel", result.position - global_transform.basis.z * epsilon)
+				player.break_voxel(result.position - global_transform.basis.z * epsilon)
 		
 
 func raycast():
