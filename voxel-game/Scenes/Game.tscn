@@ -32,7 +32,7 @@ material/0 = null
 
 [node name="VoxelWorld" parent="." instance=ExtResource( 4 )]
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Reticle" type="ColorRect" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

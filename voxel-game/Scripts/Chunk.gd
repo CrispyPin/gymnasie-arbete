@@ -129,7 +129,7 @@ func set_voxel(pos, t):
 	return false
 
 func pos_is_valid(x, y, z):
-	return !(x<0 or x>size or y<0 or y>size or z<0 or z>size)
+	return !(x<0 or x>=size or y<0 or y>=size or z<0 or z>=size)
 
 func world_to_chunk(wpos):
 	var phy_size = size*vsize
