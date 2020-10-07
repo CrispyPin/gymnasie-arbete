@@ -1,14 +1,15 @@
 extends Spatial
 
-export var voxels = []
 
 var changed = false
+var voxels = PoolIntArray()
 
 const size = Globals.chunk_size
 const vsize = Globals.voxel_size
 
 var mesh
 
+### mesh parts
 var mesh_array = []
 var verts = PoolVector3Array()
 var uvs = PoolVector2Array()
@@ -16,7 +17,7 @@ var normals = PoolVector3Array()
 var indices = PoolIntArray()
 var collision_tris = PoolVector3Array()
 
-# mesh constants
+### mesh constants
 const face_normals = [Vector3(1, 0, 0), Vector3(-1, 0, 0),
 		Vector3(0, 1, 0), Vector3(0, -1, 0),
 		Vector3(0, 0, 1), Vector3(0, 0, -1)]
@@ -39,27 +40,31 @@ func _ready():
 	
 	
 	#initialize voxels array
-	for _x in range(size):
-		voxels.append([])
-		for _y in range(size):
-			voxels[-1].append([])
-			for _z in range(size):
-				voxels[-1][-1].append(0)
+	voxels.resize(size * size * size)
+	for v in range(size*size*size):
+		voxels[v] = 0
+	#for _x in range(size):
+	#	voxels.append([])
+	#	for _y in range(size):
+	#		voxels[-1].append([])
+	#		for _z in range(size):
+	#			voxels[-1][-1].append(0)
 	
-	set_voxel(Vector3(0,0,0), 1)
-	set_voxel(Vector3(1,0,0), 1)
-	set_voxel(Vector3(0,1,0), 1)
-	set_voxel(Vector3(0,0,1), 1)
+	_set_voxel_local(Vector3(0,0,0), 1)
+	_set_voxel_local(Vector3(1,0,0), 1)
+	_set_voxel_local(Vector3(0,1,0), 1)
+	_set_voxel_local(Vector3(0,0,1), 1)
+	_set_voxel_local(Vector3(1,2,1), 1)
 	
-	update_mesh()
+	_update_mesh()
 	
 
 func _process(_delta):
 	if changed:
-		update_mesh()
+		_update_mesh()
 		changed = false
 
-func update_mesh():
+func _update_mesh():
 	verts.resize(0)
 	uvs.resize(0)
 	normals.resize(0)
@@ -69,8 +74,8 @@ func update_mesh():
 	for x in range(size):
 		for y in range(size):
 			for z in range(size):
-				if get_voxel_raw(x, y, z):
-					update_mesh_voxel(x, y, z)
+				if _get_voxel_raw(x, y, z):
+					_update_mesh_voxel(x, y, z)
 	
 	mesh_array[Mesh.ARRAY_VERTEX] = verts
 	mesh_array[Mesh.ARRAY_TEX_UV] = uvs
@@ -84,13 +89,13 @@ func update_mesh():
 	$StaticBody/CollisionShape.shape.set_faces(collision_tris)
 
 
-func update_mesh_voxel(x, y, z):
+func _update_mesh_voxel(x, y, z):
 	for f in range(6):
-		update_mesh_face(x, y, z, f)
+		_update_mesh_face(x, y, z, f)
 
-func update_mesh_face(x, y, z, f):
+func _update_mesh_face(x, y, z, f):
 	var pos = Vector3(x, y, z)
-	if get_voxel(pos + face_normals[f]):
+	if _get_voxel_local(pos + face_normals[f]):
 		return
 	var i = len(verts)# offset for new tris
 	
@@ -111,27 +116,41 @@ func update_mesh_face(x, y, z, f):
 	uvs.append(Vector2(1, 1))
 
 
-func get_voxel_raw(x, y, z):
-	if pos_is_valid(x,y,z):
-		return voxels[x][y][z]
+func _get_voxel_raw(x, y, z):
+	if _xyz_is_valid(x,y,z):
+		#return voxels[x][y][z]
+		return voxels[_xyz_to_i(x, y, z)]
 	return 0
 
-func get_voxel(pos):
-	if pos_is_valid(pos.x, pos.y, pos.z):
-		return voxels[pos.x][pos.y][pos.z]
-	return 0
+func get_voxel(wpos):
+	var pos = _world_to_chunk(wpos)
+	return _get_voxel_raw(pos.x, pos.y, pos.z)
 
-func set_voxel(pos, t):
-	if pos_is_valid(pos.x, pos.y, pos.z):
-		voxels[pos.x][pos.y][pos.z] = t
-		changed = true
-		return true
-	return false
+func _get_voxel_local(pos):
+	return _get_voxel_raw(pos.x, pos.y, pos.z)
 
-func pos_is_valid(x, y, z):
+func set_voxel(wpos, id):
+	var pos = _world_to_chunk(wpos)
+	voxels[_pos_to_i(pos)] = id
+	changed = true
+
+func _set_voxel_local(pos, id):
+	voxels[_pos_to_i(pos)] = id
+	changed = true
+
+func _xyz_is_valid(x, y, z):
 	return !(x<0 or x>=size or y<0 or y>=size or z<0 or z>=size)
 
-func world_to_chunk(wpos):
+func _pos_is_valid(pos):
+	return _xyz_is_valid(pos.x, pos.y, pos.z)
+
+func _xyz_to_i(x, y, z):
+	return x*size*size + y*size + z
+
+func _pos_to_i(pos):
+	return _xyz_to_i(pos.x, pos.y, pos.z)
+
+func _world_to_chunk(wpos):
 	var phy_size = size*vsize
 	# localise to chunk
 	var x = fmod(wpos.x, phy_size)
@@ -143,7 +162,7 @@ func world_to_chunk(wpos):
 	z /= vsize
 	# get closest
 	x = int(x)
-	y = int(y-0.5)
+	y = int(y)
 	z = int(z)
 	return Vector3(x, y, z)
 
