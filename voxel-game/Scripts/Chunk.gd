@@ -119,8 +119,11 @@ func _get_voxel_local(pos):
 
 func set_voxel(wpos, id):
 	var pos = _world_to_chunk(wpos)
-	voxels[_pos_to_i(pos)] = id
-	changed = true
+	if _pos_is_valid(pos):
+		voxels[_pos_to_i(pos)] = id
+		changed = true
+		return true
+	return false
 
 func _set_voxel_local(pos, id):
 	voxels[_pos_to_i(pos)] = id

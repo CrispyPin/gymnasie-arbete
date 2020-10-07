@@ -7,7 +7,7 @@ func _ready():
 func _player_connected(id):
 	print("Player " + str(id) + " connected")
 	Globals.players.append(id)
-	get_node("/root/GameScene")._new_player()
+	get_node("/root/Game")._new_player()
 
 func start_game():
 	$MainMenu.hide()
