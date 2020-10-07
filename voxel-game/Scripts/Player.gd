@@ -1,6 +1,6 @@
 extends KinematicBody
 
-export var reach = 5
+export var reach = 10
 
 export var speed = 10
 export var jump_power = 5

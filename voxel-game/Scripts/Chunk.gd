@@ -1,11 +1,12 @@
 extends Spatial
 
-
 var changed = false
 var voxels = PoolIntArray()
 
 const size = Globals.chunk_size
 const vsize = Globals.voxel_size
+const voxel_count = size * size * size
+const physical_size = size * vsize
 
 var mesh
 
@@ -38,23 +39,16 @@ func _ready():
 	mesh = $Mesh.mesh
 	mesh_array.resize(Mesh.ARRAY_MAX)
 	
-	
 	#initialize voxels array
 	voxels.resize(size * size * size)
 	for v in range(size*size*size):
 		voxels[v] = 0
-	#for _x in range(size):
-	#	voxels.append([])
-	#	for _y in range(size):
-	#		voxels[-1].append([])
-	#		for _z in range(size):
-	#			voxels[-1][-1].append(0)
 	
 	_set_voxel_local(Vector3(0,0,0), 1)
 	_set_voxel_local(Vector3(1,0,0), 1)
 	_set_voxel_local(Vector3(0,1,0), 1)
 	_set_voxel_local(Vector3(0,0,1), 1)
-	_set_voxel_local(Vector3(1,2,1), 1)
+	_set_voxel_local(Vector3(1,1,1), 1)
 	
 	_update_mesh()
 	
@@ -71,11 +65,10 @@ func _update_mesh():
 	indices.resize(0)
 	collision_tris.resize(0)
 	
-	for x in range(size):
-		for y in range(size):
-			for z in range(size):
-				if _get_voxel_raw(x, y, z):
-					_update_mesh_voxel(x, y, z)
+	for vi in range(voxel_count):
+		if voxels[vi]:
+			for f in range(6):
+				_update_mesh_face(_i_to_pos(vi), f)
 	
 	mesh_array[Mesh.ARRAY_VERTEX] = verts
 	mesh_array[Mesh.ARRAY_TEX_UV] = uvs
@@ -89,12 +82,8 @@ func _update_mesh():
 	$StaticBody/CollisionShape.shape.set_faces(collision_tris)
 
 
-func _update_mesh_voxel(x, y, z):
-	for f in range(6):
-		_update_mesh_face(x, y, z, f)
-
-func _update_mesh_face(x, y, z, f):
-	var pos = Vector3(x, y, z)
+func _update_mesh_face(pos, f):
+	#var pos = Vector3(x, y, z)
 	if _get_voxel_local(pos + face_normals[f]):
 		return
 	var i = len(verts)# offset for new tris
@@ -118,7 +107,6 @@ func _update_mesh_face(x, y, z, f):
 
 func _get_voxel_raw(x, y, z):
 	if _xyz_is_valid(x,y,z):
-		#return voxels[x][y][z]
 		return voxels[_xyz_to_i(x, y, z)]
 	return 0
 
@@ -149,6 +137,9 @@ func _xyz_to_i(x, y, z):
 
 func _pos_to_i(pos):
 	return _xyz_to_i(pos.x, pos.y, pos.z)
+
+func _i_to_pos(i):
+	return Vector3(int(i/(size*size)), int(i/size) % size, i % size)
 
 func _world_to_chunk(wpos):
 	var phy_size = size*vsize
