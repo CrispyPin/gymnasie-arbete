@@ -46,12 +46,10 @@ func _ready():
 			for _z in range(size):
 				voxels[-1][-1].append(0)
 	
-	voxels[0][0][0] = 1
-	voxels[1][1][1] = 1
-	voxels[1][1][2] = 1
-	voxels[1][1][3] = 1
-	voxels[1][1][4] = 1
-	voxels[1][2][3] = 1
+	set_voxel(Vector3(0,0,0), 1)
+	set_voxel(Vector3(1,0,0), 1)
+	set_voxel(Vector3(0,1,0), 1)
+	set_voxel(Vector3(0,0,1), 1)
 	
 	update_mesh()
 	
@@ -145,7 +143,7 @@ func world_to_chunk(wpos):
 	z /= vsize
 	# get closest
 	x = int(x)
-	y = int(y)
+	y = int(y-0.5)
 	z = int(z)
 	return Vector3(x, y, z)
 
