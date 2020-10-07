@@ -2,6 +2,8 @@ extends Spatial
 
 export var voxels = []
 
+var changed = false
+
 const size = Globals.chunk_size
 const vsize = Globals.voxel_size
 
@@ -55,7 +57,9 @@ func _ready():
 	
 
 func _process(_delta):
-	pass
+	if changed:
+		update_mesh()
+		changed = false
 
 func update_mesh():
 	verts.resize(0)
@@ -122,7 +126,7 @@ func get_voxel(pos):
 func set_voxel(pos, t):
 	if pos_is_valid(pos.x, pos.y, pos.z):
 		voxels[pos.x][pos.y][pos.z] = t
-		update_mesh()
+		changed = true
 		return true
 	return false
 
