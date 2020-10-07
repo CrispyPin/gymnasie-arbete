@@ -2,7 +2,7 @@ extends Spatial
 
 var player
 
-const epsilon = 0.01
+const epsilon = 0.001
 
 func _ready():
 	player = get_parent()
