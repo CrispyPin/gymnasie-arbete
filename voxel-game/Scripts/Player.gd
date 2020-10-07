@@ -14,6 +14,8 @@ var velocity = Vector3()
 
 func _ready():
 	world = get_parent().get_node("VoxelWorld")
+	if is_network_master():
+		hide()
 
 func _input(event):
 	if is_network_master():

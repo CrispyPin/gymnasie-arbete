@@ -21,4 +21,4 @@ func _physics_process(_delta):
 
 func raycast():
 	var space_state = get_world().direct_space_state
-	return space_state.intersect_ray(global_transform.origin, global_transform.origin - global_transform.basis.z * player.reach, [player.get_node("BodyCollider")])
+	return space_state.intersect_ray(global_transform.origin, global_transform.origin - global_transform.basis.z * player.reach, [player])
