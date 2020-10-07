@@ -14,7 +14,10 @@ func _physics_process(_delta):
 			var result = raycast()
 			if result:
 				player.break_voxel(result.position - global_transform.basis.z * epsilon)
-		
+		if Input.is_action_just_pressed("place_voxel"):
+			var result = raycast()
+			if result:
+				player.place_voxel(result.position + global_transform.basis.z * epsilon)
 
 func raycast():
 	var space_state = get_world().direct_space_state

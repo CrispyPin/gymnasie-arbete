@@ -1,4 +1,4 @@
 extends Spatial
 
-func set_voxel(pos):
-	$Chunk.set_voxel($Chunk.world_to_chunk(pos), 0)
+func set_voxel(pos, id):
+	$Chunk.set_voxel($Chunk.world_to_chunk(pos), id)

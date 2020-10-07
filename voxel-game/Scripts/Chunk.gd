@@ -35,6 +35,7 @@ func _ready():
 	mesh = $Mesh.mesh
 	mesh_array.resize(Mesh.ARRAY_MAX)
 	
+	
 	#initialize voxels array
 	for _x in range(size):
 		voxels.append([])
@@ -50,7 +51,6 @@ func _ready():
 	voxels[1][1][4] = 1
 	voxels[1][2][3] = 1
 	
-	#mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh_array)
 	update_mesh()
 	
 
@@ -75,11 +75,12 @@ func update_mesh():
 	mesh_array[Mesh.ARRAY_NORMAL] = normals
 	mesh_array[Mesh.ARRAY_INDEX]  = indices
 	
-	mesh.surface_remove(0)
+	if mesh.get_surface_count():
+		mesh.surface_remove(0)
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh_array)
 
 	$StaticBody/CollisionShape.shape.set_faces(collision_tris)
-	#$Mesh.create_trimesh_collision()
+
 
 func update_mesh_voxel(x, y, z):
 	for f in range(6):

@@ -63,4 +63,7 @@ func respawn():
 	rpc_unreliable("update_pos", global_transform)
 
 func break_voxel(pos):
-	world.set_voxel(pos)
+	world.set_voxel(pos, 0)
+
+func place_voxel(pos):
+	world.set_voxel(pos, 1)
