@@ -28,7 +28,6 @@ func _input(event):
 			angle_v = max(PI *-0.5 - $Head.rotation.x, angle_v)
 			$Head.rotate_x(angle_v)
 			rpc_unreliable("update_rot", rotation.y, $Head.rotation.x)
-		#elif event is InputEventMouseButton:
 			
 
 puppet func update_pos(pos):
