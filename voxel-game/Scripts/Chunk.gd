@@ -43,9 +43,24 @@ const face_verts = [
 ]
 
 func _ready():
+	$Mesh.mesh = ArrayMesh.new()
 	mesh = $Mesh.mesh
 	mesh_array.resize(Mesh.ARRAY_MAX)
 	
+	#initialize voxels array
+	voxels.resize(size * size * size)
+	for v in range(size*size*size):
+		voxels[v] = 0
+	
+	#_set_voxel_local(Vector3(0,0,0), 1)
+	#_set_voxel_local(Vector3(1,0,0), 1)
+	#_set_voxel_local(Vector3(0,1,0), 1)
+	#_set_voxel_local(Vector3(0,0,1), 1)
+	#_set_voxel_local(Vector3(1,1,1), 1)
+	
+	#_update_mesh()
+
+func init():# set after moving to correct location
 	x_min = global_transform.origin.x
 	x_max = global_transform.origin.x + physical_size
 	y_min = global_transform.origin.y
@@ -53,19 +68,10 @@ func _ready():
 	z_min = global_transform.origin.z
 	z_max = global_transform.origin.z + physical_size
 	
-	#initialize voxels array
-	voxels.resize(size * size * size)
-	for v in range(size*size*size):
-		voxels[v] = 0
-	
-	_set_voxel_local(Vector3(0,0,0), 1)
-	_set_voxel_local(Vector3(1,0,0), 1)
-	_set_voxel_local(Vector3(0,1,0), 1)
-	_set_voxel_local(Vector3(0,0,1), 1)
-	_set_voxel_local(Vector3(1,1,1), 1)
-	
+	for x in range(size):
+		for z in range(size):
+			voxels[x*size*size + z] = 1
 	_update_mesh()
-	
 
 func _process(_delta):
 	if changed:
@@ -138,10 +144,10 @@ func _get_voxel_local(pos):
 func set_voxel(wpos, id):
 	if _wpos_is_valid(wpos):
 		var pos = _world_to_chunk(wpos)
-		if _pos_is_valid(pos):
-			voxels[_pos_to_i(pos)] = id
-			changed = true
-			return true
+		voxels[_pos_to_i(pos)] = id
+		print(wpos)
+		changed = true
+		return true
 	return false
 
 func _set_voxel_local(pos, id):

@@ -7,6 +7,7 @@ func _ready():
 	local_player.set_network_master(get_tree().get_network_unique_id())
 	Globals.local_player = local_player
 	add_child(local_player)
+	local_player.global_transform.origin.y = 2
 
 func _new_player():
 	var new_player = preload("res://Scenes/Player.tscn").instance()
