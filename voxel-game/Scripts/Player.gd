@@ -9,6 +9,8 @@ export var sensitivity_v = 1.0
 
 export var gravity = 10
 
+var selected_voxel = 1
+
 var world
 var velocity = Vector3()
 
@@ -26,6 +28,8 @@ func _input(event):
 			angle_v = max(PI *-0.5 - $Head.rotation.x, angle_v)
 			$Head.rotate_x(angle_v)
 			rpc_unreliable("update_rot", rotation.y, $Head.rotation.x)
+		#elif event is InputEventMouseButton:
+			
 
 puppet func update_pos(pos):
 	global_transform = pos
@@ -33,6 +37,13 @@ puppet func update_pos(pos):
 puppet func update_rot(y, x):
 	$Head.rotation.x = x
 	rotation.y = y
+
+func _process(_delta):
+	if is_network_master():
+		if Input.is_action_just_released("next_item"):
+			selected_voxel += 1
+		if Input.is_action_just_released("prev_item"):
+			selected_voxel -= 1
 
 func _physics_process(delta):
 	if is_network_master():
@@ -68,4 +79,4 @@ func break_voxel(pos):
 	world.set_voxel(pos, 0)
 
 func place_voxel(pos):
-	world.set_voxel(pos, 1)
+	world.set_voxel(pos, selected_voxel)

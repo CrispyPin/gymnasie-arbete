@@ -16,6 +16,7 @@ var z_min
 var z_max
 
 var mesh
+var collider
 
 ### mesh parts
 var mesh_array = []
@@ -44,7 +45,8 @@ const face_verts = [
 
 func _ready():
 	$Mesh.mesh = ArrayMesh.new()
-	$StaticBody/CollisionShape.shape = ConcavePolygonShape.new()
+	collider = $StaticBody/Collision
+	collider.shape = ConcavePolygonShape.new()
 	mesh = $Mesh.mesh
 	mesh_array.resize(Mesh.ARRAY_MAX)
 	
@@ -52,14 +54,7 @@ func _ready():
 	voxels.resize(size * size * size)
 	for v in range(size*size*size):
 		voxels[v] = 0
-	
-	#_set_voxel_local(Vector3(0,0,0), 1)
-	#_set_voxel_local(Vector3(1,0,0), 1)
-	#_set_voxel_local(Vector3(0,1,0), 1)
-	#_set_voxel_local(Vector3(0,0,1), 1)
-	#_set_voxel_local(Vector3(1,1,1), 1)
-	
-	#_update_mesh()
+
 
 func init():# set after moving to correct location
 	x_min = global_transform.origin.x
@@ -89,7 +84,7 @@ func _update_mesh():
 	for vi in range(voxel_count):
 		if voxels[vi]:
 			for f in range(6):
-				_update_mesh_face(_i_to_pos(vi), f)
+				_update_mesh_face(_i_to_pos(vi), f, voxels[vi])
 	
 	mesh_array[Mesh.ARRAY_VERTEX] = verts
 	mesh_array[Mesh.ARRAY_TEX_UV] = uvs
@@ -101,13 +96,13 @@ func _update_mesh():
 	
 	if mesh_array[0]:
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh_array)
-		$StaticBody/CollisionShape.disabled = false
-		$StaticBody/CollisionShape.shape.set_faces(collision_tris)
+		collider.disabled = false
+		collider.shape.set_faces(collision_tris)
 	else:
-		$StaticBody/CollisionShape.disabled = true
+		collider.disabled = true
 
 
-func _update_mesh_face(pos, f):
+func _update_mesh_face(pos, f, id):
 	#var pos = Vector3(x, y, z)
 	if _get_voxel_local(pos + face_normals[f]):
 		return
@@ -124,10 +119,10 @@ func _update_mesh_face(pos, f):
 		collision_tris.append((pos + face_verts[f][v]) * vsize)
 	
 	# create uvs
-	uvs.append(Vector2(0, 1))
-	uvs.append(Vector2(0, 0))
-	uvs.append(Vector2(1, 0))
-	uvs.append(Vector2(1, 1))
+	uvs.append(Vector2(0.0625*(id-1), 0.0625))
+	uvs.append(Vector2(0.0625*(id-1), 0))
+	uvs.append(Vector2(0.0625*id, 0))
+	uvs.append(Vector2(0.0625*id, 0.0625))
 
 
 func _get_voxel_raw(x, y, z):
@@ -143,12 +138,13 @@ func _get_voxel_local(pos):
 	return _get_voxel_raw(pos.x, pos.y, pos.z)
 
 func set_voxel(wpos, id):
-	if _wpos_is_valid(wpos):
-		var pos = _world_to_chunk(wpos)
-		voxels[_pos_to_i(pos)] = id
+	if !_wpos_is_valid(wpos):
+		return false
+	var idx = _pos_to_i(_world_to_chunk(wpos))
+	if voxels[idx] != id:
+		voxels[idx] = id
 		changed = true
-		return true
-	return false
+	return true
 
 func _set_voxel_local(pos, id):
 	voxels[_pos_to_i(pos)] = id
