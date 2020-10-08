@@ -146,7 +146,6 @@ func set_voxel(wpos, id):
 	if _wpos_is_valid(wpos):
 		var pos = _world_to_chunk(wpos)
 		voxels[_pos_to_i(pos)] = id
-		print(wpos, pos)
 		changed = true
 		return true
 	return false
