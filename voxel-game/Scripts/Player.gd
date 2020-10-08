@@ -41,7 +41,7 @@ func _process(_delta):
 	if is_network_master():
 		if Input.is_action_just_released("next_item"):
 			selected_voxel += 1
-		if Input.is_action_just_released("prev_item"):
+		if Input.is_action_just_released("prev_item") && selected_voxel > 1:
 			selected_voxel -= 1
 
 func _physics_process(delta):

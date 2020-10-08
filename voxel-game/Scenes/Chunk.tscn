@@ -3,12 +3,10 @@
 [ext_resource path="res://Scripts/Chunk.gd" type="Script" id=1]
 [ext_resource path="res://textures.tres" type="Material" id=2]
 
-[node name="Chunk" type="Spatial"]
+[node name="Chunk" type="StaticBody"]
 script = ExtResource( 1 )
 
 [node name="Mesh" type="MeshInstance" parent="."]
 material_override = ExtResource( 2 )
 
-[node name="StaticBody" type="StaticBody" parent="."]
-
-[node name="Collision" type="CollisionShape" parent="StaticBody"]
+[node name="Collider" type="CollisionShape" parent="."]

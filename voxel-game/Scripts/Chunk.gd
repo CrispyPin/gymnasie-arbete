@@ -43,16 +43,21 @@ const face_verts = [
 	[Vector3(1,0,0), Vector3(1,1,0), Vector3(0,1,0), Vector3(0,0,0)]
 ]
 
+var uv_ids
+
 func _ready():
 	$Mesh.mesh = ArrayMesh.new()
-	collider = $StaticBody/Collision
-	collider.shape = ConcavePolygonShape.new()
 	mesh = $Mesh.mesh
 	mesh_array.resize(Mesh.ARRAY_MAX)
 	
+	collider = $Collider
+	collider.shape = ConcavePolygonShape.new()
+	
+	uv_ids = Globals.uv_ids
+	
 	#initialize voxels array
 	voxels.resize(size * size * size)
-	for v in range(size*size*size):
+	for v in range(size * size * size):
 		voxels[v] = 0
 
 
@@ -66,7 +71,7 @@ func init():# set after moving to correct location
 	
 	for x in range(size):
 		for z in range(size):
-			voxels[x*size*size + z] = randi()%3 + 2
+			voxels[x*size*size + z] = 1# randi()%3 + 2
 	_update_mesh()
 
 func _process(_delta):
@@ -103,7 +108,6 @@ func _update_mesh():
 
 
 func _update_mesh_face(pos, f, id):
-	#var pos = Vector3(x, y, z)
 	if _get_voxel_local(pos + face_normals[f]):
 		return
 	var i = len(verts)# offset for new tris
@@ -118,11 +122,12 @@ func _update_mesh_face(pos, f, id):
 		#collision shape
 		collision_tris.append((pos + face_verts[f][v]) * vsize)
 	
-	# create uvs
-	uvs.append(Vector2(0.0625*(id-1), 0.0625))
-	uvs.append(Vector2(0.0625*(id-1), 0))
-	uvs.append(Vector2(0.0625*id, 0))
-	uvs.append(Vector2(0.0625*id, 0.0625))
+	# add uvs
+	uvs.append_array(uv_ids[(id-1) % len(uv_ids)])
+#	uvs.append(Vector2(0.0625*(id-1), 0.0625))
+#	uvs.append(Vector2(0.0625*(id-1), 0))
+#	uvs.append(Vector2(0.0625*id, 0))
+#	uvs.append(Vector2(0.0625*id, 0.0625))
 
 
 func _get_voxel_raw(x, y, z):
