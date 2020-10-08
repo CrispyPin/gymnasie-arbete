@@ -66,7 +66,7 @@ func init():# set after moving to correct location
 	
 	for x in range(size):
 		for z in range(size):
-			voxels[x*size*size + z] = 1
+			voxels[x*size*size + z] = randi()%3 + 2
 	_update_mesh()
 
 func _process(_delta):
