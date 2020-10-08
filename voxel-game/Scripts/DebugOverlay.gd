@@ -13,6 +13,7 @@ func _process(_delta):
 	if visible:
 		update_pos()
 		update_rot()
+		update_fps()
 
 	if Input.is_action_just_pressed("debug_overlay_toggle"):
 		visible = !visible
@@ -26,3 +27,7 @@ func update_pos():
 func update_rot():
 	$Rotation.text = "Pitch: " + str(Globals.local_player.get_node("Head").rotation.x) + "\n"
 	$Rotation.text +="Yaw:   " + str(Globals.local_player.rotation.y)
+
+
+func update_fps():
+	$FPS.text = "FPS: " + str(Engine.get_frames_per_second())

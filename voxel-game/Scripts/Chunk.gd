@@ -44,6 +44,7 @@ const face_verts = [
 
 func _ready():
 	$Mesh.mesh = ArrayMesh.new()
+	$StaticBody/CollisionShape.shape = ConcavePolygonShape.new()
 	mesh = $Mesh.mesh
 	mesh_array.resize(Mesh.ARRAY_MAX)
 	
@@ -113,7 +114,7 @@ func _update_mesh_face(pos, f):
 	var i = len(verts)# offset for new tris
 	
 	for v in range(4):# add the 4 corner verts of this face
-		verts.append((pos + face_verts[f][v])*vsize)
+		verts.append((pos + face_verts[f][v]) * vsize)
 		normals.append(face_normals[f])
 	
 	# connect them into tris:
@@ -145,7 +146,7 @@ func set_voxel(wpos, id):
 	if _wpos_is_valid(wpos):
 		var pos = _world_to_chunk(wpos)
 		voxels[_pos_to_i(pos)] = id
-		print(wpos)
+		print(wpos, pos)
 		changed = true
 		return true
 	return false
@@ -174,9 +175,9 @@ func _i_to_pos(i):
 
 func _world_to_chunk(wpos):
 	# localise to chunk
-	var x = fmod(wpos.x, physical_size)
-	var y = fmod(wpos.y, physical_size)
-	var z = fmod(wpos.z, physical_size)
+	var x = fposmod(wpos.x, physical_size)
+	var y = fposmod(wpos.y, physical_size)
+	var z = fposmod(wpos.z, physical_size)
 	# scale to voxels
 	x /= vsize
 	y /= vsize
