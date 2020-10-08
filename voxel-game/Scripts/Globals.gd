@@ -9,9 +9,11 @@ const voxel_size = .25 # unit size of each voxel
 var uv_ids = []
 
 func _ready():
-	uv_ids = [
-		[Vector2(0, .0625), Vector2(0, 0), Vector2(.0625, 0), Vector2(.0625, .0625)],
-		[Vector2(.0625, .0625), Vector2(.0625, 0), Vector2(.125, 0), Vector2(.125, .0625)],
-		[Vector2(.125, .0625), Vector2(.125, 0), Vector2(.1875, 0), Vector2(.1875, .0625)],
-		[Vector2(.1875, .0625), Vector2(.1875, 0), Vector2(.25, 0), Vector2(.25, .0625)],
-	]
+	for y in range(1, 17):
+		for x in range(1, 17):
+			uv_ids.append([
+				Vector2(.0625*(x-1), .0625*y),
+				Vector2(.0625*(x-1), .0625*(y-1)),
+				Vector2(.0625*x, .0625*(y-1)),
+				Vector2(.0625*x, .0625*y)
+			])
