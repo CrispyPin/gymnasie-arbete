@@ -2,7 +2,7 @@ extends Spatial
 
 var player
 
-const epsilon = 0.001
+const surface_offset = 0.01
 
 func _ready():
 	player = get_parent()
@@ -13,11 +13,11 @@ func _physics_process(_delta):
 		if Input.is_action_just_pressed("break_voxel"):
 			var result = raycast()
 			if result:
-				player.break_voxel(result.position - global_transform.basis.z * epsilon)
+				player.break_voxel(result.position - result.normal * surface_offset)
 		if Input.is_action_just_pressed("place_voxel"):
 			var result = raycast()
 			if result:
-				player.place_voxel(result.position + global_transform.basis.z * epsilon)
+				player.place_voxel(result.position + result.normal * surface_offset)
 
 func raycast():
 	var space_state = get_world().direct_space_state
