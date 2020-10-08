@@ -1,7 +1,7 @@
 extends Spatial
 
 var changed = false
-var voxels = PoolIntArray()
+var voxels = PoolByteArray()
 
 const size = Globals.chunk_size
 const vsize = Globals.voxel_size
@@ -123,11 +123,7 @@ func _update_mesh_face(pos, f, id):
 		collision_tris.append((pos + face_verts[f][v]) * vsize)
 	
 	# add uvs
-	uvs.append_array(uv_ids[(id-1) % len(uv_ids)])
-#	uvs.append(Vector2(0.0625*(id-1), 0.0625))
-#	uvs.append(Vector2(0.0625*(id-1), 0))
-#	uvs.append(Vector2(0.0625*id, 0))
-#	uvs.append(Vector2(0.0625*id, 0.0625))
+	uvs.append_array(uv_ids[id-1])
 
 
 func _get_voxel_raw(x, y, z):
