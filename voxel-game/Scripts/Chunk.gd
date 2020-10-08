@@ -8,6 +8,13 @@ const vsize = Globals.voxel_size
 const voxel_count = size * size * size
 const physical_size = size * vsize
 
+var x_min
+var x_max
+var y_min
+var y_max
+var z_min
+var z_max
+
 var mesh
 
 ### mesh parts
@@ -38,6 +45,13 @@ const face_verts = [
 func _ready():
 	mesh = $Mesh.mesh
 	mesh_array.resize(Mesh.ARRAY_MAX)
+	
+	x_min = global_transform.origin.x
+	x_max = global_transform.origin.x + physical_size
+	y_min = global_transform.origin.y
+	y_max = global_transform.origin.y + physical_size
+	z_min = global_transform.origin.z
+	z_max = global_transform.origin.z + physical_size
 	
 	#initialize voxels array
 	voxels.resize(size * size * size)
@@ -77,9 +91,13 @@ func _update_mesh():
 	
 	if mesh.get_surface_count():
 		mesh.surface_remove(0)
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh_array)
-
-	$StaticBody/CollisionShape.shape.set_faces(collision_tris)
+	
+	if mesh_array[0]:
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh_array)
+		$StaticBody/CollisionShape.disabled = false
+		$StaticBody/CollisionShape.shape.set_faces(collision_tris)
+	else:
+		$StaticBody/CollisionShape.disabled = true
 
 
 func _update_mesh_face(pos, f):
@@ -118,11 +136,12 @@ func _get_voxel_local(pos):
 	return _get_voxel_raw(pos.x, pos.y, pos.z)
 
 func set_voxel(wpos, id):
-	var pos = _world_to_chunk(wpos)
-	if _pos_is_valid(pos):
-		voxels[_pos_to_i(pos)] = id
-		changed = true
-		return true
+	if _wpos_is_valid(wpos):
+		var pos = _world_to_chunk(wpos)
+		if _pos_is_valid(pos):
+			voxels[_pos_to_i(pos)] = id
+			changed = true
+			return true
 	return false
 
 func _set_voxel_local(pos, id):
@@ -135,6 +154,9 @@ func _xyz_is_valid(x, y, z):
 func _pos_is_valid(pos):
 	return _xyz_is_valid(pos.x, pos.y, pos.z)
 
+func _wpos_is_valid(wpos):
+	return !(wpos.x < x_min or wpos.x >= x_max or wpos.y < y_min or wpos.y >= y_max or wpos.z < z_min or wpos.z >= z_max)
+
 func _xyz_to_i(x, y, z):
 	return x*size*size + y*size + z
 
@@ -145,11 +167,10 @@ func _i_to_pos(i):
 	return Vector3(int(i/(size*size)), int(i/size) % size, i % size)
 
 func _world_to_chunk(wpos):
-	var phy_size = size*vsize
 	# localise to chunk
-	var x = fmod(wpos.x, phy_size)
-	var y = fmod(wpos.y, phy_size)
-	var z = fmod(wpos.z, phy_size)
+	var x = fmod(wpos.x, physical_size)
+	var y = fmod(wpos.y, physical_size)
+	var z = fmod(wpos.z, physical_size)
 	# scale to voxels
 	x /= vsize
 	y /= vsize
