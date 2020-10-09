@@ -13,7 +13,7 @@ func _ready():
 
 
 func _physics_process(delta):
-	if is_network_master():
+	if is_network_master() && !Globals.paused:
 		if Input.is_action_pressed("break_voxel"):
 			since_repeat_b += delta
 			if since_repeat_b >= repeat_delay or Input.is_action_just_pressed("break_voxel"):

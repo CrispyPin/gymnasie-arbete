@@ -13,10 +13,10 @@ func _process(_delta):
 		self.visible = !self.visible
 		if self.visible:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-			get_tree().paused = true
+			Globals.paused = true
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-			get_tree().paused = false
+			Globals.paused = false
 
 
 

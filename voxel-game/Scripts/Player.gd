@@ -20,7 +20,7 @@ func _ready():
 		hide()
 
 func _input(event):
-	if is_network_master():
+	if is_network_master() && !Globals.paused:
 		if event is InputEventMouseMotion:
 			rotation.y += -event.relative.x * sensitivity_h * 0.002
 			var angle_v = -event.relative.y * sensitivity_v * 0.002
@@ -38,7 +38,7 @@ puppet func update_rot(y, x):
 	rotation.y = y
 
 func _process(_delta):
-	if is_network_master():
+	if is_network_master() && !Globals.paused:
 		if Input.is_action_just_released("next_item"):
 			selected_voxel += 1
 		if Input.is_action_just_released("prev_item") && selected_voxel > 1:
@@ -47,14 +47,15 @@ func _process(_delta):
 func _physics_process(delta):
 	if is_network_master():
 		var dir = Vector3()
-		if Input.is_key_pressed(KEY_W):
-			dir -= transform.basis[2]
-		if Input.is_key_pressed(KEY_S):
-			dir += transform.basis[2]
-		if Input.is_key_pressed(KEY_A):
-			dir -= transform.basis[0]
-		if Input.is_key_pressed(KEY_D):
-			dir += transform.basis[0]
+		if !Globals.paused:
+			if Input.is_key_pressed(KEY_W):
+				dir -= transform.basis[2]
+			if Input.is_key_pressed(KEY_S):
+				dir += transform.basis[2]
+			if Input.is_key_pressed(KEY_A):
+				dir -= transform.basis[0]
+			if Input.is_key_pressed(KEY_D):
+				dir += transform.basis[0]
 
 		dir.y = 0
 		dir = dir.normalized() * speed
