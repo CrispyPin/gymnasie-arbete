@@ -26,23 +26,6 @@ var normals = PoolVector3Array()
 var indices = PoolIntArray()
 var collision_tris = PoolVector3Array()
 
-### mesh constants
-const face_normals = [Vector3(1, 0, 0), Vector3(-1, 0, 0),
-		Vector3(0, 1, 0), Vector3(0, -1, 0),
-		Vector3(0, 0, 1), Vector3(0, 0, -1)]
-
-#faces: +x -x +y -y +z -z
-const face_verts = [
-	[Vector3(1,0,1), Vector3(1,1,1), Vector3(1,1,0), Vector3(1,0,0)],
-	[Vector3(0,0,0), Vector3(0,1,0), Vector3(0,1,1), Vector3(0,0,1)],
-	
-	[Vector3(0,1,0), Vector3(1,1,0), Vector3(1,1,1), Vector3(0,1,1)],
-	[Vector3(0,0,1), Vector3(1,0,1), Vector3(1,0,0), Vector3(0,0,0)],
-	
-	[Vector3(0,0,1), Vector3(0,1,1), Vector3(1,1,1), Vector3(1,0,1)],
-	[Vector3(1,0,0), Vector3(1,1,0), Vector3(0,1,0), Vector3(0,0,0)]
-]
-
 var uv_ids
 
 func _ready():
@@ -87,17 +70,6 @@ func _process(_delta):
 		changed = false
 
 func _update_mesh():
-	#verts.resize(0)
-	#uvs.resize(0)
-	#normals.resize(0)
-	#indices.resize(0)
-	#collision_tris.resize(0)
-	#
-	#for vi in range(voxel_count):
-	#	if voxels[vi]:
-	#		for f in range(6):
-	#			_update_mesh_face(_i_to_pos(vi), f, voxels[vi])
-	#
 	$Mesh.voxels = voxels
 	$Mesh.UpdateMesh()
 	
@@ -117,23 +89,6 @@ func _update_mesh():
 		collider.disabled = true
 
 
-func _update_mesh_face(pos, f, id):
-	if _get_voxel_local(pos + face_normals[f]):
-		return
-	var i = len(verts)# offset for new tris
-	
-	for v in range(4):# add the 4 corner verts of this face
-		verts.append((pos + face_verts[f][v]) * vsize)
-		normals.append(face_normals[f])
-	
-	# connect them into tris:
-	for v in [0,1,2,2,3,0]:
-		indices.append(i+v)
-		#collision shape
-		collision_tris.append((pos + face_verts[f][v]) * vsize)
-	
-	# add uvs
-	uvs.append_array(uv_ids[id-1])
 
 
 func _get_voxel_raw(x, y, z):

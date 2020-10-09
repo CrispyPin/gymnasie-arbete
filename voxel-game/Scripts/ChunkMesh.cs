@@ -29,7 +29,7 @@ public class ChunkMesh : MeshInstance
 		new Vector3(1, 0, 0), new Vector3(-1, 0, 0),
 		new Vector3(0, 1, 0), new Vector3(0, -1, 0),
 		new Vector3(0, 0, 1), new Vector3(0, 0, -1)};
-
+	//indexed by [face#][vert#]
 	Vector3[][] faceVerts = new Vector3[][] {
 		new Vector3[] {new Vector3(1,0,1), new Vector3(1,1,1), new Vector3(1,1,0), new Vector3(1,0,0)},
 		new Vector3[] {new Vector3(0,0,0), new Vector3(0,1,0), new Vector3(0,1,1), new Vector3(0,0,1)},
@@ -46,12 +46,9 @@ public class ChunkMesh : MeshInstance
 		chunk = GetNode("..");
 		size = (int)chunk.Get("size");
 		vsize = (float)chunk.Get("vsize");
-		//uvIDs = (Array<Vector2[]>)chunk.Get("uv_ids");
 
 		voxelCount = size * size * size;
-		//voxels = new byte[voxelCount];
 		physicalSize = size * vsize;
-
 	}
 
 
@@ -79,12 +76,11 @@ public class ChunkMesh : MeshInstance
 		chunk.Set("normals", normals);
 		chunk.Set("indices", indices);
 		chunk.Set("collision_tris", collisionVerts);
-
 	}
 
 	void UpdateMeshFace(Vector3 pos, int f, byte id)
 	{
-		if ((int)chunk.Call("_get_voxel_local", pos + faceNormals[f]) != 0)
+		if (_GetVoxelLocal(pos + faceNormals[f]) != 0)
 		{
 			return;
 		}
@@ -96,7 +92,7 @@ public class ChunkMesh : MeshInstance
 			normals.Add(faceNormals[f]);
 			uvs.Add(uvIDs[id-1][v]);
 		}
-
+		//construct tris from the verts
 		foreach (int v in new int[] {0,1,2,2,3,0})
 		{
 			indices.Add(i+v);
@@ -108,5 +104,19 @@ public class ChunkMesh : MeshInstance
 	Vector3 IToPos(int i)
 	{
 		return new Vector3((int)(i/(size*size)), (int)(i/size) % size, i % size);
+	}
+
+	int _GetVoxelLocal(Vector3 pos)
+	{
+		if (PosValid(pos))
+		{
+			return voxels[(int)(pos.x*size*size + pos.y*size + pos.z)];
+		}
+		return 0;
+	}
+
+	bool PosValid(Vector3 pos)
+	{
+		return !(pos.x<0 || pos.x>=size || pos.y<0 || pos.y>=size || pos.z<0 || pos.z>=size);
 	}
 }
