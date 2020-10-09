@@ -4,7 +4,7 @@ var player
 
 const surface_offset = 0.01
 
-export var repeat_delay = 0.1
+export var repeat_delay = 0.15
 var since_repeat_b = 0# break
 var since_repeat_p = 0# place
 

@@ -66,6 +66,10 @@ func _physics_process(delta):
 			velocity.y = jump_power
 
 		velocity = move_and_slide(velocity, Vector3.UP)
+		
+		# step-up on blocks
+		if velocity.length() < dir.length() - 0.1 && is_on_floor():
+			global_transform.origin.y += Globals.voxel_size + 0.01
 
 		rpc_unreliable("update_pos", global_transform)
 
