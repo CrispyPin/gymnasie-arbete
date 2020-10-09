@@ -54,6 +54,7 @@ func _ready():
 	collider.shape = ConcavePolygonShape.new()
 	
 	uv_ids = Globals.uv_ids
+	$Mesh.uvIDs = uv_ids
 	
 	#initialize voxels array
 	voxels.resize(size * size * size)
@@ -86,22 +87,25 @@ func _process(_delta):
 		changed = false
 
 func _update_mesh():
-	verts.resize(0)
-	uvs.resize(0)
-	normals.resize(0)
-	indices.resize(0)
-	collision_tris.resize(0)
+	#verts.resize(0)
+	#uvs.resize(0)
+	#normals.resize(0)
+	#indices.resize(0)
+	#collision_tris.resize(0)
+	#
+	#for vi in range(voxel_count):
+	#	if voxels[vi]:
+	#		for f in range(6):
+	#			_update_mesh_face(_i_to_pos(vi), f, voxels[vi])
+	#
+	$Mesh.voxels = voxels
+	$Mesh.UpdateMesh()
 	
-	for vi in range(voxel_count):
-		if voxels[vi]:
-			for f in range(6):
-				_update_mesh_face(_i_to_pos(vi), f, voxels[vi])
-	
-	mesh_array[Mesh.ARRAY_VERTEX] = verts
-	mesh_array[Mesh.ARRAY_TEX_UV] = uvs
-	mesh_array[Mesh.ARRAY_NORMAL] = normals
-	mesh_array[Mesh.ARRAY_INDEX]  = indices
-	
+	mesh_array[Mesh.ARRAY_VERTEX] = PoolVector3Array(verts)
+	mesh_array[Mesh.ARRAY_TEX_UV] = PoolVector2Array(uvs)
+	mesh_array[Mesh.ARRAY_NORMAL] = PoolVector3Array( normals)
+	mesh_array[Mesh.ARRAY_INDEX]  = PoolIntArray(indices)
+
 	if mesh.get_surface_count():
 		mesh.surface_remove(0)
 	
