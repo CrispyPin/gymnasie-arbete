@@ -75,7 +75,7 @@ func _physics_process(delta):
 		rpc_unreliable("update_pos", global_transform)
 
 func respawn():
-	global_transform.origin = Vector3(0,1,0)
+	global_transform.origin = Vector3(0, 5, 0)
 	velocity = Vector3(0, 0, 0);
 	rpc_unreliable("update_pos", global_transform)
 
