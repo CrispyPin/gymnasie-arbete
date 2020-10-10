@@ -109,7 +109,8 @@ func set_voxel(wpos, id):
 	var idx = _pos_to_i(_world_to_chunk(wpos))
 	if voxels[idx] != id:
 		voxels[idx] = id
-		changed = true
+		$Mesh.UpdateMeshVoxel(idx)# TODO update neighbors
+		#changed = true
 	return true
 
 func _set_voxel_local(pos, id):

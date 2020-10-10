@@ -21,6 +21,9 @@ public class ChunkMesh : MeshInstance
 	Array<int> indices = new Array<int>();
 	Array<Vector3> collisionVerts = new Array<Vector3>();
 
+	int[,] voxelVerts;
+	int[,] voxelIndices;
+
 	Array<Vector2[]> uvIDs;
 
 	byte[] voxels;
@@ -29,6 +32,7 @@ public class ChunkMesh : MeshInstance
 		new Vector3(1, 0, 0), new Vector3(-1, 0, 0),
 		new Vector3(0, 1, 0), new Vector3(0, -1, 0),
 		new Vector3(0, 0, 1), new Vector3(0, 0, -1)};
+	
 	//indexed by [face#][vert#]
 	Vector3[][] faceVerts = new Vector3[][] {
 		new Vector3[] {new Vector3(1,0,1), new Vector3(1,1,1), new Vector3(1,1,0), new Vector3(1,0,0)},
@@ -49,6 +53,8 @@ public class ChunkMesh : MeshInstance
 
 		voxelCount = size * size * size;
 		physicalSize = size * vsize;
+		voxelVerts = new int[voxelCount,6];
+		voxelIndices = new int[voxelCount,6];
 	}
 
 
@@ -78,6 +84,31 @@ public class ChunkMesh : MeshInstance
 		chunk.Set("collision_tris", collisionVerts);
 	}
 
+	public void UpdateMeshVoxel(int i)
+	{
+		for (int f = 0; f < 6; f++)
+		{
+			//remove old face if it exists
+			if (voxelVerts[i,f] != -1)//reference index of this face exists
+			{
+				//remove the 4 verts of this face & associated uvs, normals
+				for (int v = 0; v < 4; v++)
+				{
+					verts.RemoveAt(voxelVerts[i,f]);
+					uvs.RemoveAt(voxelVerts[i,f]);
+					normals.RemoveAt(voxelVerts[i,f]);
+				}//remove the coresponding triangles
+				for (int v = 0; v < 6; v++)
+				{
+					indices.RemoveAt(voxelIndices[i,f]);
+					collisionVerts.RemoveAt(voxelIndices[i,f]);
+				}
+			}
+			voxelVerts[i,f] = -1;
+			UpdateMeshFace(IToPos(i), f, voxels[i]);
+		}
+	}
+
 	void UpdateMeshFace(Vector3 pos, int f, byte id)
 	{
 		if (_GetVoxelLocal(pos + faceNormals[f]) != 0)
@@ -85,6 +116,9 @@ public class ChunkMesh : MeshInstance
 			return;
 		}
 		int i = verts.Count; //offset for new tris
+		
+		voxelVerts[PosToI(pos), f] = i;
+		voxelIndices[PosToI(pos), f] = indices.Count;
 
 		for (int v = 0; v < 4; v++)
 		{
@@ -98,7 +132,6 @@ public class ChunkMesh : MeshInstance
 			indices.Add(i+v);
 			collisionVerts.Add((pos + faceVerts[f][v]) * vsize);
 		}
-
 	}
 
 	Vector3 IToPos(int i)
@@ -113,6 +146,11 @@ public class ChunkMesh : MeshInstance
 			return voxels[(int)(pos.x*size*size + pos.y*size + pos.z)];
 		}
 		return 0;
+	}
+
+	int PosToI(Vector3 pos)
+	{
+		return (int)(pos.x*size*size + pos.y*size + pos.z);
 	}
 
 	bool PosValid(Vector3 pos)
