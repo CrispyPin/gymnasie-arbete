@@ -21,3 +21,6 @@ func _new_player():
 	new_player.set_network_master(Globals.players[-1])
 	add_child(new_player)
 
+func _remove_player(id):
+	get_node(str(id)).queue_free()
+	

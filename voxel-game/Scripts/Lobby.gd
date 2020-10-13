@@ -2,12 +2,17 @@ extends Node
 
 func _ready():
 	var _err =	get_tree().connect("network_peer_connected", self, "_player_connected")
-
+	_err = get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
 
 func _player_connected(id):
-	print("Player " + str(id) + " connected")
+	print("Player " + str(id) + " joined")
 	Globals.players.append(id)
 	get_node("/root/Game")._new_player()
+
+func _player_disconnected(id):
+	print("Player " + str(id) + " left")
+	Globals.players.erase(id)
+	get_node("/root/Game")._remove_player(id)
 
 func start_game():
 	$MainMenu.hide()
