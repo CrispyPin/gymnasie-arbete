@@ -45,7 +45,7 @@ func _ready():
 		voxels[v] = 0
 
 
-func init():# set after moving to correct location
+func init(is_master):# set after moving to correct location
 	x_min = global_transform.origin.x
 	x_max = global_transform.origin.x + physical_size
 	y_min = global_transform.origin.y
@@ -53,16 +53,29 @@ func init():# set after moving to correct location
 	z_min = global_transform.origin.z
 	z_max = global_transform.origin.z + physical_size
 	
+	if is_master:
+		_generate()
+	else:
+		var y = (Globals.chunk_size-1)*size
+		for x in range(size):
+			for z in range(size):
+				voxels[x*size*size + y + z] = 1
+	_update_mesh()
+
+func _generate():
 	for x in range(size):
 		for z in range(size):
 			voxels[x*size*size + z] = 1
-			voxels[x*size*size + z + size] = 2
-			voxels[x*size*size + z + size*2] = 2
-			voxels[x*size*size + z + size*3] = 2
-			voxels[x*size*size + z + size*4] = 3
-			voxels[x*size*size + z + size*5] = 4
-			
-	_update_mesh()
+			#voxels[x*size*size + z + size] = 2
+			#voxels[x*size*size + z + size*2] = 2
+			#voxels[x*size*size + z + size*3] = 2
+			#voxels[x*size*size + z + size*4] = 3
+			#voxels[x*size*size + z + size*5] = 4
+			var p = _local_to_world(x, 0, z)
+			var h = sin(p.x/3.0) * 2 + sin(p.z/3.0) * 2 + 12
+			h += sin(p.x)*1.5 + sin(p.z)*1.5
+			for y in range(1, int(h)):
+				voxels[x*size*size + z + size*y] = 4
 
 func _process(_delta):
 	if changed:
@@ -149,3 +162,5 @@ func _world_to_chunk(wpos):
 	z = int(z)
 	return Vector3(x, y, z)
 
+func _local_to_world(x, y, z):
+	return Vector3(x*vsize + x_min, y*vsize + y_min, z*vsize + z_min)
