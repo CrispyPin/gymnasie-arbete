@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/MainMenu.gd" type="Script" id=1]
+[ext_resource path="res://Materials/menu_container.tres" type="StyleBox" id=2]
 
 [node name="MainMenu" type="Panel"]
 anchor_left = 0.5
@@ -16,40 +17,139 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HostButton" type="Button" parent="."]
+[node name="Host" type="Panel" parent="."]
 margin_left = 64.0
 margin_top = 56.0
-margin_right = 192.0
-margin_bottom = 80.0
+margin_right = 448.0
+margin_bottom = 120.0
+custom_styles/panel = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HostButton" type="Button" parent="Host"]
+margin_left = 232.0
+margin_top = 8.0
+margin_right = 376.0
+margin_bottom = 56.0
 text = "Host game"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="JoinButton" type="Button" parent="."]
-margin_left = 64.0
-margin_top = 96.0
-margin_right = 192.0
-margin_bottom = 120.0
-text = "Join game"
+[node name="InputPort" type="LineEdit" parent="Host"]
+margin_left = 8.0
+margin_top = 32.0
+margin_right = 128.0
+margin_bottom = 56.0
+text = "4242"
 
-[node name="InputIP" type="LineEdit" parent="."]
-margin_left = 208.0
-margin_top = 96.0
-margin_right = 320.0
-margin_bottom = 120.0
+[node name="InputPlayerCount" type="LineEdit" parent="Host"]
+margin_left = 136.0
+margin_top = 32.0
+margin_right = 224.0
+margin_bottom = 56.0
+text = "16"
+
+[node name="Label" type="Label" parent="Host"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 128.0
+margin_bottom = 32.0
+text = "Port"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="Host"]
+margin_left = 136.0
+margin_top = 8.0
+margin_right = 224.0
+margin_bottom = 32.0
+text = "Max players"
+align = 1
+valign = 1
+
+[node name="Join" type="Panel" parent="."]
+margin_left = 64.0
+margin_top = 144.0
+margin_right = 448.0
+margin_bottom = 208.0
+custom_styles/panel = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JoinButton" type="Button" parent="Join"]
+margin_left = 232.0
+margin_top = 8.0
+margin_right = 376.0
+margin_bottom = 56.0
+text = "Join game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputIP" type="LineEdit" parent="Join"]
+margin_left = 8.0
+margin_top = 32.0
+margin_right = 128.0
+margin_bottom = 56.0
 text = "127.0.0.1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InputPort" type="LineEdit" parent="."]
-margin_left = 208.0
-margin_top = 56.0
-margin_right = 320.0
-margin_bottom = 80.0
+[node name="InputPort" type="LineEdit" parent="Join"]
+margin_left = 136.0
+margin_top = 32.0
+margin_right = 224.0
+margin_bottom = 56.0
 text = "4242"
-[connection signal="pressed" from="HostButton" to="." method="_on_HostButton_pressed"]
-[connection signal="pressed" from="JoinButton" to="." method="_on_JoinButton_pressed"]
-[connection signal="text_changed" from="InputIP" to="." method="_on_InputIP_text_changed"]
-[connection signal="text_changed" from="InputPort" to="." method="_on_InputPort_text_changed"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Join"]
+margin_left = 136.0
+margin_top = 8.0
+margin_right = 224.0
+margin_bottom = 32.0
+text = "Port"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="Join"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 128.0
+margin_bottom = 32.0
+text = "Host IP"
+align = 1
+valign = 1
+
+[node name="Exit" type="Panel" parent="."]
+margin_left = 192.0
+margin_top = 232.0
+margin_right = 320.0
+margin_bottom = 296.0
+custom_styles/panel = ExtResource( 2 )
+
+[node name="ExitButton" type="Button" parent="Exit"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 56.0
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Host/HostButton" to="." method="_host_game"]
+[connection signal="text_changed" from="Host/InputPort" to="." method="_set_host_port"]
+[connection signal="text_changed" from="Host/InputPlayerCount" to="." method="_set_max_players"]
+[connection signal="pressed" from="Join/JoinButton" to="." method="_join_game"]
+[connection signal="text_changed" from="Join/InputIP" to="." method="_set_ip"]
+[connection signal="text_changed" from="Join/InputPort" to="." method="_set_join_port"]
+[connection signal="pressed" from="Exit/ExitButton" to="." method="_on_ExitButton_pressed"]
