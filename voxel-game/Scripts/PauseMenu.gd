@@ -27,3 +27,9 @@ func _on_RespawnButton_pressed():
 func _on_ExitBtn_pressed():
 	get_tree().set_network_peer(null)
 	get_tree().quit()
+
+
+func _on_DisconnectBtn_pressed():
+	get_tree().set_network_peer(null)
+	get_node("/root/Lobby/MainMenu").visible = true
+	get_parent().queue_free()
