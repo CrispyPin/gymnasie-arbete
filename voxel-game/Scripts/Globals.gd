@@ -8,7 +8,7 @@ const voxel_size = .25 # unit size of each voxel
 
 var paused = false
 
-var uv_ids = []
+var uv_ids = [[Vector2(0,1), Vector2(0,0), Vector2(1,0), Vector2(1,1)]]
 
 func _ready():
 	for y in range(1, 17):

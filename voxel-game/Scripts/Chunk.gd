@@ -65,7 +65,7 @@ func init():# set after moving to correct location
 	_update_mesh()
 
 func _process(_delta):
-	if changed:
+	if changed or Input.is_action_just_pressed("ui_home"):
 		_update_mesh()
 		changed = false
 

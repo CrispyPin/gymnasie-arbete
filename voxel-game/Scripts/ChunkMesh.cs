@@ -124,7 +124,7 @@ public class ChunkMesh : MeshInstance
 		{
 			verts.Add((pos + faceVerts[f][v]) * vsize);
 			normals.Add(faceNormals[f]);
-			uvs.Add(uvIDs[id-1][v]);
+			uvs.Add(uvIDs[id][v]);
 		}
 		//construct tris from the verts
 		foreach (int v in new int[] {0,1,2,2,3,0})
