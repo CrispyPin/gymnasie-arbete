@@ -4,7 +4,6 @@
 [ext_resource path="res://Materials/textures.tres" type="Material" id=2]
 [ext_resource path="res://Scripts/ChunkMesh.cs" type="Script" id=3]
 
-
 [node name="Chunk" type="StaticBody"]
 script = ExtResource( 1 )
 

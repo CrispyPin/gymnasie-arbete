@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/PauseMenu.gd" type="Script" id=1]
+[ext_resource path="res://Materials/menu_container.tres" type="StyleBox" id=2]
 
 [node name="PauseMenu" type="Panel"]
 pause_mode = 2
@@ -8,44 +9,80 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -256.0
+margin_left = -192.0
 margin_top = -164.0
-margin_right = 256.0
-margin_bottom = 164.0
+margin_right = 192.0
+margin_bottom = 140.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DisconnectBtn" type="Button" parent="."]
-margin_left = 64.0
-margin_top = 168.0
-margin_right = 160.0
-margin_bottom = 192.0
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 64.0
+margin_bottom = 96.0
+custom_styles/panel = ExtResource( 2 )
+
+[node name="DisconnectBtn" type="Button" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
 text = "Disconnect"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RespawnBtn" type="Button" parent="."]
-margin_left = 208.0
-margin_top = 168.0
-margin_right = 304.0
-margin_bottom = 192.0
+[node name="Panel2" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -64.0
+margin_top = 120.0
+margin_right = 64.0
+margin_bottom = 184.0
+custom_styles/panel = ExtResource( 2 )
+
+[node name="RespawnBtn" type="Button" parent="Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
 text = "Respawn"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ExitBtn" type="Button" parent="."]
-margin_left = 352.0
-margin_top = 168.0
-margin_right = 448.0
-margin_bottom = 192.0
+[node name="Panel3" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -64.0
+margin_top = 208.0
+margin_right = 64.0
+margin_bottom = 272.0
+custom_styles/panel = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExitBtn" type="Button" parent="Panel3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
 text = "Exit"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="DisconnectBtn" to="." method="_on_DisconnectBtn_pressed"]
-[connection signal="pressed" from="RespawnBtn" to="." method="_on_RespawnButton_pressed"]
-[connection signal="pressed" from="ExitBtn" to="." method="_on_ExitBtn_pressed"]
+[connection signal="pressed" from="Panel/DisconnectBtn" to="." method="_on_DisconnectBtn_pressed"]
+[connection signal="pressed" from="Panel2/RespawnBtn" to="." method="_on_RespawnButton_pressed"]
+[connection signal="pressed" from="Panel3/ExitBtn" to="." method="_on_ExitBtn_pressed"]
