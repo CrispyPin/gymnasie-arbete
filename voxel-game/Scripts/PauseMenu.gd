@@ -33,3 +33,8 @@ func _on_DisconnectBtn_pressed():
 	get_tree().set_network_peer(null)
 	get_node("/root/Lobby/MainMenu").visible = true
 	get_parent().queue_free()
+
+
+func _on_SaveBtn_pressed():
+	Globals.game.save_world("test_world")
+	print("SAVING WORLD")

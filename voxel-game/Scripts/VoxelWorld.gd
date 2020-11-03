@@ -12,7 +12,7 @@ func _ready():
 	for x in range(-count, count):
 		for z in range(-count, count):
 			var c = chunk.instance()
-			c.name = "chunk " + str(x) + ",0," + str(z)
+			c.name = "chunk_" + str(x) + ",0," + str(z)
 			add_child(c)
 			c.global_transform.origin = Vector3(x * Globals.chunk_size * Globals.voxel_size, 0, z * Globals.chunk_size * Globals.voxel_size)
 			c.call_deferred("init", is_network_master())
@@ -32,7 +32,10 @@ func set_voxel(pos, id):
 	rpc("_set_voxel_networked", pos, id)
 
 func get_chunk(x, y, z):
-	return get_node("chunk " + str(x) + "," + str(y) + "," + str(z))
+	return get_node(chunk_name(x,y,z))
+
+func chunk_name(x, y, z):
+	return "chunk_" + str(x) + "," + str(y) + "," + str(z)
 
 
 func request_chunks():
@@ -50,3 +53,15 @@ remote func recieve_chunk(x, y, z, voxels):
 	c.voxels = voxels
 	c._update_mesh()
 	
+func save(save_path):
+	var dir = Directory.new()
+	if !dir.dir_exists(save_path):
+		dir.make_dir(save_path)
+	
+	for x in range(-count, count):
+		for z in range(-count, count):
+			var file = File.new()
+			var err = file.open(save_path + chunk_name(x, 0, z) + ".vxl", File.WRITE)
+			if err == OK:
+				file.store_var(get_chunk(x,0,z).voxels)
+				file.close()

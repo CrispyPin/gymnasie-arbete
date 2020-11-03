@@ -18,6 +18,7 @@ func start_game():
 	$MainMenu.hide()
 	var game = preload("res://Scenes/Game.tscn").instance()
 	get_tree().get_root().add_child(game)
+	Globals.game = game
 
 
 func host_game(port, max_players):

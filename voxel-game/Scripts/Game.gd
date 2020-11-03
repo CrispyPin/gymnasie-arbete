@@ -1,5 +1,9 @@
 extends Node
 
+const SAVE_DIR = "user://saves/"
+
+var world_name = "world"
+
 var time = 0
 
 func _ready():
@@ -23,4 +27,16 @@ func _new_player():
 
 func _remove_player(id):
 	get_node(str(id)).queue_free()
+
+func save_world(name="world"):
+	var save_path = SAVE_DIR + name + "/"
+	var dir = Directory.new()
+	if !dir.dir_exists(save_path):
+		dir.make_dir_recursive(save_path)
 	
+	$VoxelWorld.save(save_path + "chunks/")
+	
+	#save general world data here
+
+func load_world(name="world"):
+	pass

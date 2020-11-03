@@ -24,7 +24,7 @@ anchor_right = 0.5
 margin_left = -64.0
 margin_top = 32.0
 margin_right = 64.0
-margin_bottom = 96.0
+margin_bottom = 80.0
 custom_styles/panel = ExtResource( 2 )
 
 [node name="DisconnectBtn" type="Button" parent="Panel"]
@@ -43,9 +43,9 @@ __meta__ = {
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -64.0
-margin_top = 120.0
+margin_top = 160.0
 margin_right = 64.0
-margin_bottom = 184.0
+margin_bottom = 208.0
 custom_styles/panel = ExtResource( 2 )
 
 [node name="RespawnBtn" type="Button" parent="Panel2"]
@@ -60,11 +60,32 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Panel4" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -64.0
+margin_top = 96.0
+margin_right = 64.0
+margin_bottom = 144.0
+custom_styles/panel = ExtResource( 2 )
+
+[node name="SaveBtn" type="Button" parent="Panel4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+text = "Save"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Panel3" type="Panel" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -64.0
-margin_top = 208.0
+margin_top = 224.0
 margin_right = 64.0
 margin_bottom = 272.0
 custom_styles/panel = ExtResource( 2 )
@@ -85,4 +106,5 @@ __meta__ = {
 }
 [connection signal="pressed" from="Panel/DisconnectBtn" to="." method="_on_DisconnectBtn_pressed"]
 [connection signal="pressed" from="Panel2/RespawnBtn" to="." method="_on_RespawnButton_pressed"]
+[connection signal="pressed" from="Panel4/SaveBtn" to="." method="_on_SaveBtn_pressed"]
 [connection signal="pressed" from="Panel3/ExitBtn" to="." method="_on_ExitBtn_pressed"]

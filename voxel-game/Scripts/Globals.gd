@@ -3,6 +3,8 @@ extends Node
 var local_player
 export var players = []
 
+var game
+
 const chunk_size = 32 # voxels cubed in each chunk
 const voxel_size = .25 # unit size of each voxel
 
