@@ -45,7 +45,7 @@ func _ready():
 		voxels[v] = 0
 
 
-func init(is_master):# set after moving to correct location
+func init(generate=false):# set after moving to correct location
 	x_min = global_transform.origin.x
 	x_max = global_transform.origin.x + physical_size
 	y_min = global_transform.origin.y
@@ -53,9 +53,9 @@ func init(is_master):# set after moving to correct location
 	z_min = global_transform.origin.z
 	z_max = global_transform.origin.z + physical_size
 	
-	if is_master:
+	if generate:
 		_generate()
-	else:
+	else:#temp before downloading / loading chunks
 		var y = (Globals.chunk_size-1)*size
 		for x in range(size):
 			for z in range(size):

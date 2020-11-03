@@ -12,10 +12,10 @@ func _ready():
 	for x in range(-count, count):
 		for z in range(-count, count):
 			var c = chunk.instance()
-			c.name = "chunk_" + str(x) + ",0," + str(z)
+			c.name = chunk_name(x, 0, z)
 			add_child(c)
 			c.global_transform.origin = Vector3(x * Globals.chunk_size * Globals.voxel_size, 0, z * Globals.chunk_size * Globals.voxel_size)
-			c.call_deferred("init", is_network_master())
+			c.call_deferred("init", get_parent().generate_new)
 	has_chunks = get_tree().is_network_server()
 
 

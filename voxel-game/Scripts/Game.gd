@@ -3,6 +3,7 @@ extends Node
 const SAVE_DIR = "user://saves/"
 
 var world_name = "world"
+var generate_new = false
 
 var time = 0
 

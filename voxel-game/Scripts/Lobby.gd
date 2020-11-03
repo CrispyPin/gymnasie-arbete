@@ -14,14 +14,16 @@ func _player_disconnected(id):
 	Globals.players.erase(id)
 	get_node("/root/Game")._remove_player(id)
 
-func start_game():
+func start_game(name, new):
 	$MainMenu.hide()
 	var game = preload("res://Scenes/Game.tscn").instance()
 	get_tree().get_root().add_child(game)
 	Globals.game = game
+	game.world_name = name
+	game.generate_new = new
 
 
-func host_game(port, max_players):
+func host_game(port, max_players, name="world", new=true):
 	print("Hosting game on port " + str(port))
 	var host = NetworkedMultiplayerENet.new()
 	var res = host.create_server(port, max_players)
@@ -30,7 +32,7 @@ func host_game(port, max_players):
 		return
 
 	get_tree().set_network_peer(host)
-	start_game()
+	start_game(name, new)
 
 func join_game(ip, port):
 	print("Joining game on " + ip + ":" + str(port))
@@ -38,5 +40,5 @@ func join_game(ip, port):
 	host.create_client(ip, port)
 
 	get_tree().set_network_peer(host)
-	start_game()
+	start_game("server", false)
 

@@ -17,7 +17,7 @@ func _host_game():
 	lobby.host_game(host_port, max_players)
 
 func _load_game():
-	lobby.load_game(host_port, max_players, load_name)
+	lobby.host_game(host_port, max_players, load_name)
 
 func _join_game():
 	lobby.join_game(ip, join_port)
