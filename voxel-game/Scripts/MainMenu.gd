@@ -7,6 +7,7 @@ export var join_port = 4242
 
 export var host_port = 4242
 export var max_players = 16
+export var load_name = ""
 
 func _ready():
 	lobby = get_parent()
@@ -14,6 +15,9 @@ func _ready():
 
 func _host_game():
 	lobby.host_game(host_port, max_players)
+
+func _load_game():
+	lobby.load_game(host_port, max_players, load_name)
 
 func _join_game():
 	lobby.join_game(ip, join_port)
@@ -31,6 +35,10 @@ func _set_host_port(new_text):
 func _set_max_players(new_text):
 	max_players = int(new_text)
 
+func _set_load_name(new_text):
+	load_name = new_text
 
 func _on_ExitButton_pressed():
 	get_tree().quit()
+
+
