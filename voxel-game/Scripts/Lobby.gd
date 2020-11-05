@@ -21,7 +21,8 @@ func start_game(name, new):
 	Globals.game = game
 	game.world_name = name
 	game.generate_new = new
-
+	if !new:
+		game.get_node("VoxelWorld").call_deferred("load_chunks", name)
 
 func host_game(port, max_players, name="world", new=true):
 	print("Hosting game on port " + str(port))

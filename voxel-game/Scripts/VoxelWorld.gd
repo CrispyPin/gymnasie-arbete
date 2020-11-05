@@ -16,7 +16,9 @@ func _ready():
 			add_child(c)
 			c.global_transform.origin = Vector3(x * Globals.chunk_size * Globals.voxel_size, 0, z * Globals.chunk_size * Globals.voxel_size)
 			c.call_deferred("init", get_parent().generate_new)
-	has_chunks = get_tree().is_network_server()
+	has_chunks = get_parent().generate_new
+	#if !get_parent().generate_new:
+	#	load_chunks(get_parent().world_name)
 
 
 func _process(_delta):
@@ -52,7 +54,31 @@ remote func recieve_chunk(x, y, z, voxels):
 	var c = get_chunk(x, y, z)
 	c.voxels = voxels
 	c._update_mesh()
+
+func load_chunks(save_path):
+	save_path = get_parent().SAVE_DIR + save_path + "/"
+	print("LOADING WORLD")
+	var dir = Directory.new()
+	if !dir.dir_exists(save_path):
+		print(save_path)
+		print("SAVE NOT FOUND, generating new world")
+		
+		for x in range(-count, count):
+			for z in range(-count, count):
+				get_chunk(x, 0, z).init(true)
+		return
 	
+	for x in range(-count, count):
+		for z in range(-count, count):
+			var file = File.new()
+			var err = file.open(save_path + "chunks/" + chunk_name(x, 0, z) + ".vxl", File.READ)
+			if err == OK:
+				var c = get_chunk(x, 0, z)
+				c.voxels = file.get_var()
+				c.changed = true
+				file.close()
+		
+
 func save(save_path):
 	var dir = Directory.new()
 	if !dir.dir_exists(save_path):

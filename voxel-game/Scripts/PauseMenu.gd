@@ -36,5 +36,5 @@ func _on_DisconnectBtn_pressed():
 
 
 func _on_SaveBtn_pressed():
-	Globals.game.save_world("test_world")
+	Globals.game.save_world(Globals.game.world_name)
 	print("SAVING WORLD")

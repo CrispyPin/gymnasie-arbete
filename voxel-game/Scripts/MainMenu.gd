@@ -14,10 +14,10 @@ func _ready():
 
 
 func _host_game():
-	lobby.host_game(host_port, max_players)
+	lobby.host_game(host_port, max_players, load_name, true)
 
 func _load_game():
-	lobby.host_game(host_port, max_players, load_name)
+	lobby.host_game(host_port, max_players, load_name, false)
 
 func _join_game():
 	lobby.join_game(ip, join_port)

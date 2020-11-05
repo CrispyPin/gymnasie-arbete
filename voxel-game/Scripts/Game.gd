@@ -3,7 +3,7 @@ extends Node
 const SAVE_DIR = "user://saves/"
 
 var world_name = "world"
-var generate_new = false
+var generate_new = true
 
 var time = 0
 
@@ -14,11 +14,14 @@ func _ready():
 	Globals.local_player = local_player
 	add_child(local_player)
 	local_player.global_transform.origin.y = 16
+	
 
 func _process(delta):
 	time += delta
-	if time > 1 && !$VoxelWorld.has_chunks:
-		$VoxelWorld.request_chunks()
+	if !$VoxelWorld.has_chunks && time > 1:
+		if !get_tree().is_network_server():
+			$VoxelWorld.request_chunks()
+		
 
 func _new_player():
 	var new_player = preload("res://Scenes/Player.tscn").instance()
@@ -39,5 +42,5 @@ func save_world(name="world"):
 	
 	#save general world data here
 
-func load_world(name="world"):
-	pass
+#func load_world(name="world"):
+#	pass
