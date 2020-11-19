@@ -1,6 +1,6 @@
 extends Spatial
 
-export var count = 4
+export var count = 8
 
 const chunk = preload("res://Scenes/Chunk.tscn")
 var player

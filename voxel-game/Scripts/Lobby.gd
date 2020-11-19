@@ -41,5 +41,11 @@ func join_game(ip, port):
 	host.create_client(ip, port)
 
 	get_tree().set_network_peer(host)
-	start_game("server", false)
-
+	
+	$MainMenu.hide()
+	var game = preload("res://Scenes/Game.tscn").instance()
+	get_tree().get_root().add_child(game)
+	Globals.game = game
+	game.world_name = name
+	game.generate_new = false
+	game.get_node("VoxelWorld").call_deferred("request_chunks")

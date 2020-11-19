@@ -5,8 +5,8 @@ export var players = []
 
 var game
 
-const chunk_size = 32 # voxels cubed in each chunk
-const voxel_size = .25 # unit size of each voxel
+const chunk_size = 16 # voxels cubed in each chunk
+const voxel_size = 0.25 # unit size of each voxel
 
 var paused = false
 

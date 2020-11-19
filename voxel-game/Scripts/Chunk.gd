@@ -72,9 +72,11 @@ func _generate():
 			#voxels[x*size*size + z + size*4] = 3
 			#voxels[x*size*size + z + size*5] = 4
 			var p = _local_to_world(x, 0, z)
-			var h = sin(p.x/3.0) * 2 + sin(p.z/3.0) * 2 + 12
-			h += sin(p.x)*1.5 + sin(p.z)*1.5
-			for y in range(1, int(h)):
+			
+			var h = sin(p.x/3.0/vsize) * 2 + sin(p.z/3.0/vsize) * 2 + 12
+			h += sin(p.x/vsize)*1.5 + sin(p.z/vsize)*1.5
+			
+			for y in range(1, min(int(h), size)):
 				voxels[x*size*size + z + size*y] = 4
 
 func _process(_delta):
